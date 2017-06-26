@@ -13,6 +13,9 @@ public class Notification extends RealmObject {
     private Long dateNotification;
     private boolean isNotification;
 
+    public Notification() {
+    }
+
     public Notification(Long dateNotification, boolean isNotification) {
         this.dateNotification = dateNotification;
         this.isNotification = isNotification;

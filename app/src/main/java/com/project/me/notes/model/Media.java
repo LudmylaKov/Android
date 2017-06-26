@@ -3,6 +3,7 @@ package com.project.me.notes.model;
 import java.io.File;
 import java.util.List;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -13,12 +14,15 @@ import io.realm.annotations.PrimaryKey;
 public class Media extends RealmObject {
     @PrimaryKey
     private int id;
-   // private RealmList<File> audio;
-    private List<File> audio;
-    private List<File> video;
-    private List<String> links;
+    private RealmList<AttachedFile> audio;
+    private RealmList<AttachedFile> video;
+    private RealmList<AttachedFile> links;
 
-    public Media(List<File> audio, List<File> video, List<String> links) {
+    public Media() {
+    }
+
+    public Media(int id, RealmList<AttachedFile> audio, RealmList<AttachedFile> video, RealmList<AttachedFile> links) {
+        this.id = id;
         this.audio = audio;
         this.video = video;
         this.links = links;
@@ -32,27 +36,27 @@ public class Media extends RealmObject {
         this.id = id;
     }
 
-    public List<File> getAudio() {
+    public RealmList<AttachedFile> getAudio() {
         return audio;
     }
 
-    public void setAudio(List<File> audio) {
+    public void setAudio(RealmList<AttachedFile> audio) {
         this.audio = audio;
     }
 
-    public List<File> getVideo() {
+    public RealmList<AttachedFile> getVideo() {
         return video;
     }
 
-    public void setVideo(List<File> video) {
+    public void setVideo(RealmList<AttachedFile> video) {
         this.video = video;
     }
 
-    public List<String> getLinks() {
+    public RealmList<AttachedFile> getLinks() {
         return links;
     }
 
-    public void setLinks(List<String> links) {
+    public void setLinks(RealmList<AttachedFile> links) {
         this.links = links;
     }
 }
