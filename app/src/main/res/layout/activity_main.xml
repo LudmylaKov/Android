@@ -1,36 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.tubb.smrv.SwipeVerticalMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sml="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sml"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.project.me.notes.MainActivity">
+    android:layout_height="wrap_content"
+    sml:sml_scroller_interpolator="@android:anim/bounce_interpolator"
+    sml:sml_auto_open_percent="0.2"
+    sml:sml_scroller_duration="250"
+    >
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+    <include android:id="@id/smContentView" layout="@layout/content_main"/>
+    <include android:id="@id/smMenuViewTop" layout="@layout/left_menu"/>
+    <!--<include android:id="@id/smMenuViewBottom" layout="@layout/left_menu"/>-->
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabMode="scrollable"
-            app:tabGravity="fill"/>
-    </android.support.design.widget.AppBarLayout>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"  />
-
-</android.support.design.widget.CoordinatorLayout>
+</com.tubb.smrv.SwipeVerticalMenuLayout>

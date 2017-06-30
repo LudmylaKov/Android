@@ -7,9 +7,45 @@
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="one"
-        android:textSize="40dp"
+        android:layout_height="1400dp"
+        android:text="onek
+
+
+njnljnk
+njnjnk
+nkjnlk
+adf
+adfg
+adfg
+a
+dfh
+
+agh
+
+adfh
+
+
+
+adfh
+
+
+afdh
+
+
+adfh
+
+
+adfh
+
+
+
+
+adfhafdh
+
+adhaha"
+
+
+        android:textSize="140dp"
         android:textStyle="bold"
         android:layout_centerInParent="true"/>
 

@@ -8,8 +8,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.project.me.notes.model.Note;
+import com.tubb.smrv.SwipeMenuLayout;
+import com.tubb.smrv.listener.SimpleSwipeSwitchListener;
+import com.tubb.smrv.listener.SwipeSwitchListener;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +44,28 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
+        final SwipeMenuLayout sml = (SwipeMenuLayout) findViewById(R.id.sml);
+        sml.setSwipeListener(new SimpleSwipeSwitchListener() {
+            @Override
+            public void beginMenuClosed(SwipeMenuLayout swipeMenuLayout) {
+                Log.e("main", "left menu closed");
+            }
 
+            @Override
+            public void beginMenuOpened(SwipeMenuLayout swipeMenuLayout) {
+                Log.e("main", "left menu opened");
+            }
+
+            @Override
+            public void endMenuClosed(SwipeMenuLayout swipeMenuLayout) {
+                Log.e("main", "right menu closed");
+            }
+
+            @Override
+            public void endMenuOpened(SwipeMenuLayout swipeMenuLayout) {
+                Log.e("main", "right menu opened");
+            }
+        });
         /*Realm.init(this);
         Realm realm = Realm.getDefaultInstance();
 
@@ -114,4 +140,6 @@ public class MainActivity extends AppCompatActivity {
             return mFragmentTitleList.get(position);
         }
     }
+
+
 }
