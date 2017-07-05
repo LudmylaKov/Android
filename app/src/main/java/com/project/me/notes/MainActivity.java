@@ -9,6 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.project.me.notes.model.Note;
 import com.tubb.smrv.SwipeMenuLayout;
@@ -111,6 +114,18 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new NoteFragment(), "Picnotes");
         viewPager.setAdapter(adapter);
     }
+
+    //menu start
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.new_note, menu);
+        return true;
+    }
+    public void AddNewNote(MenuItem item) {
+    }
+
+    //menu end
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
