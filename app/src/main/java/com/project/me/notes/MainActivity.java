@@ -13,16 +13,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.project.me.notes.model.Note;
 import com.tubb.smrv.SwipeMenuLayout;
 import com.tubb.smrv.listener.SimpleSwipeSwitchListener;
-import com.tubb.smrv.listener.SwipeSwitchListener;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,28 +42,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        final SwipeMenuLayout sml = (SwipeMenuLayout) findViewById(R.id.sml);
-        sml.setSwipeListener(new SimpleSwipeSwitchListener() {
-            @Override
-            public void beginMenuClosed(SwipeMenuLayout swipeMenuLayout) {
-                Log.e("main", "left menu closed");
-            }
 
-            @Override
-            public void beginMenuOpened(SwipeMenuLayout swipeMenuLayout) {
-                Log.e("main", "left menu opened");
-            }
-
-            @Override
-            public void endMenuClosed(SwipeMenuLayout swipeMenuLayout) {
-                Log.e("main", "right menu closed");
-            }
-
-            @Override
-            public void endMenuOpened(SwipeMenuLayout swipeMenuLayout) {
-                Log.e("main", "right menu opened");
-            }
-        });
         /*Realm.init(this);
         Realm realm = Realm.getDefaultInstance();
 
@@ -111,21 +85,9 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new NoteFragment(), "Textnotes");
         adapter.addFragment(new NoteFragment(), "Audionotes");
         adapter.addFragment(new NoteFragment(), "Videonotes");
-        adapter.addFragment(new NoteFragment(), "Picnotes");
+//        adapter.addFragment(new NoteFragment(), "Picnotes");
         viewPager.setAdapter(adapter);
     }
-
-    //menu start
-
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.new_note, menu);
-        return true;
-    }
-    public void AddNewNote(MenuItem item) {
-    }
-
-    //menu end
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
@@ -155,6 +117,16 @@ public class MainActivity extends AppCompatActivity {
             return mFragmentTitleList.get(position);
         }
     }
+    //menu start
 
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_new_note, menu);
+        return true;
+    }
+    public void AddNewNote(MenuItem item) {
+    }
+
+    //menu end
 
 }
