@@ -4,39 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/sml"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    sml:sml_scroller_interpolator="@android:anim/bounce_interpolator"
+    android:layout_height="match_parent"
     sml:sml_auto_open_percent="0.2"
     sml:sml_scroller_duration="250"
-    tools:context="com.project.me.notes.NoteFragment"
-    >
+    sml:sml_scroller_interpolator="@android:anim/bounce_interpolator"
+    tools:context="com.project.me.notes.NoteFragment">
 
     <!--<include android:id="@id/smContentView" layout="@layout/content_main"/>-->
     <RelativeLayout
-
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@id/smContentView"
-        >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <!-- TODO: Update blank fragment layout -->
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="1400dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:text="one"
             android:textSize="140dp"
-            android:textStyle="bold"
-            android:layout_centerInParent="true"/>
-<android.support.design.widget.FloatingActionButton
-    android:id="@+id/new_note"
-    android:layout_width="80dp"
-    android:layout_height="80dp"
-    android:layout_margin="20dp"
-    android:layout_alignParentRight="true"
-    android:layout_alignParentBottom="true"
-    android:src="@drawable/ic_add_black_24dp"/>
+            android:textStyle="bold" />
+
+        <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
+
+        <!--<android.support.design.widget.FloatingActionButton-->
+            <!--android:id="@+id/new_note"-->
+            <!--android:layout_width="80dp"-->
+            <!--android:layout_height="80dp"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_margin="20dp"-->
+            <!--android:src="@drawable/ic_add_black_24dp" />-->
     </RelativeLayout>
-    <include android:id="@id/smMenuViewLeft" layout="@layout/left_menu"/>
+
+    <include
+        android:id="@id/smMenuViewLeft"
+        layout="@layout/left_menu" />
     <!--<include android:id="@id/smMenuViewBottom" layout="@layout/left_menu"/>-->
 
 </com.tubb.smrv.SwipeHorizontalMenuLayout>
