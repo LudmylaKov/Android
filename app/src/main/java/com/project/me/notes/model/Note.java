@@ -20,18 +20,18 @@ public class Note extends RealmObject {
     private String title;
     @Required
     private String text;
-    private RealmList<Tags> tags;
+    private Tag tag;
     private RealmList<Media> media;
     private Notification notification;
 
     public Note() {
     }
 
-    public Note(Long timestamp, String title, String text, RealmList<Tags> tags, RealmList<Media> media, Notification notification) {
+    public Note(Long timestamp, String title, String text, Tag tag, RealmList<Media> media, Notification notification) {
         this.timestamp = timestamp;
         this.title = title;
         this.text = text;
-        this.tags = tags;
+        this.tag = tag;
         this.media = media;
         this.notification = notification;
     }
@@ -68,12 +68,12 @@ public class Note extends RealmObject {
         this.text = text;
     }
 
-    public RealmList<Tags> getTags() {
-        return tags;
+    public Tag getTags() {
+        return tag;
     }
 
-    public void setTags(RealmList<Tags> tags) {
-        this.tags = tags;
+    public void setTags(Tag tag) {
+        this.tag = tag;
     }
 
     public RealmList<Media> getMedia() {

@@ -3,104 +3,130 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@android:color/transparent"
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
+        android:fillViewport="true"
         card_view:cardCornerRadius="10dp"
         card_view:cardElevation="5dp">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
                 <LinearLayout
                     android:id="@+id/tagLayout"
                     android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorPrimary"
-                    >
+                    android:layout_height="250dp"
+                    android:layout_alignParentLeft="true"
+                    android:background="@color/colorPrimary">
+
                     <com.project.me.notes.VerticalTextView
                         android:id="@+id/tag"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:paddingTop="5dp"
+                        android:layout_gravity="center|end"
+                        android:background="@android:color/holo_blue_dark"
                         android:paddingBottom="5dp"
                         android:paddingRight="15dp"
-                        android:textColor="@android:color/white"
-                        android:background="@android:color/holo_blue_dark"
-                        android:layout_gravity="center|end"
-                        android:textAlignment="textEnd"
+                        android:paddingTop="5dp"
                         android:text="Tags...I need more tags..."
+                        android:textAlignment="textEnd"
+                        android:textColor="@android:color/white"
                         android:textSize="20sp" />
 
                 </LinearLayout>
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:text="My title"
-                android:padding="10dp"
-                android:textSize="20sp"
-                android:layout_toRightOf="@id/tagLayout"
-                />
-            <ImageView
-                android:id="@+id/video"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:padding="10dp"
-                android:background="@drawable/ic_lens_black_24dp"
-                android:src="@drawable/ic_movie_black_24dp"/>
-            <ImageView
-                android:id="@+id/audio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:background="@drawable/ic_lens_black_24dp"
-                android:layout_toLeftOf="@id/video"
-                android:src="@drawable/ic_audiotrack_black_24dp"/>
-            <!--<View
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_toRightOf="@id/tagLayout"
+                    android:padding="10dp"
+                    android:text="My title"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:id="@+id/video"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:visibility="invisible"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/ic_lens_black_24dp"
+                    android:padding="7dp"
+                    android:src="@drawable/ic_movie_black_24dp" />
+
+                <ImageView
+                    android:id="@+id/audio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/video"
+                    android:layout_marginTop="7dp"
+                    android:visibility="invisible"
+                    android:background="@drawable/ic_lens_black_24dp"
+                    android:padding="7dp"
+                    android:src="@drawable/ic_audiotrack_black_24dp" />
+
+                <!--<View
                 style="@style/Divider"
                 android:layout_below="@id/title"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="10dp"/>-->
-            <View
-                android:id="@+id/divider"
-                android:layout_height="1dp"
-                android:layout_below="@id/title"
-                android:layout_toRightOf="@id/tagLayout"
-                android:layout_width="match_parent"
-                android:weight="1dp"
-                android:background="@color/colorPrimary"/>
-            <TextView
-                android:id="@+id/text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/divider"
-                android:text="My text\ntext\ntext\ntext\ntext\ntext\ntext\ntext"
-                android:padding="10dp"
-                android:textSize="15sp"
-                android:layout_toRightOf="@id/tagLayout"
-                />
-            <TextView
-                android:id="@+id/date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/text"
-                android:text="Current date"
-                android:textColor="@color/colorPrimary"
-                android:padding="10dp"
-                android:textSize="15sp"
-                android:layout_alignParentRight="true"
-                />
-        </RelativeLayout>
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/title"
+                    android:layout_toRightOf="@id/tagLayout"
+                    android:background="@color/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/text"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_below="@id/divider"
+                    android:layout_toRightOf="@id/tagLayout"
+                    android:padding="10dp"
+                    android:text="My text\ntext\ntext\ntext\ntext\ntext\ntext\ntext"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:padding="10dp"
+                    android:text="Current date"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:id="@+id/notification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="4dp"
+                    android:layout_toLeftOf="@id/date"
+                    android:background="@drawable/ic_lens_black_24dp"
+                    android:padding="7dp"
+                    android:src="@drawable/ic_notifications_active_black_24dp" />
+            </RelativeLayout>
+        </LinearLayout>
     </android.support.v7.widget.CardView>
 
 

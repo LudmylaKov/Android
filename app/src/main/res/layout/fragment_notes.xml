@@ -9,7 +9,7 @@
     sml:sml_auto_open_percent="0.2"
     sml:sml_scroller_duration="250"
     sml:sml_scroller_interpolator="@android:anim/bounce_interpolator"
-    tools:context="com.project.me.notes.NoteFragment">
+    tools:context="com.project.me.notes.AllNotesFragment">
 
     <!--<include android:id="@id/smContentView" layout="@layout/content_main"/>-->
     <android.support.v7.widget.RecyclerView

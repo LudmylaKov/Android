@@ -1,5 +1,6 @@
 package com.project.me.notes;
 
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.tubb.smrv.SwipeMenuLayout;
 import com.tubb.smrv.listener.SimpleSwipeSwitchListener;
@@ -42,7 +44,13 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-
+        FloatingActionButton mNewNote = (FloatingActionButton) findViewById(R.id.new_note);
+        mNewNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO open new note activity
+            }
+        });
         /*Realm.init(this);
         Realm realm = Realm.getDefaultInstance();
 
@@ -81,10 +89,10 @@ public class MainActivity extends AppCompatActivity {
     }
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new NoteFragment(), "All");
-        adapter.addFragment(new NoteFragment(), "Textnotes");
-        adapter.addFragment(new NoteFragment(), "Audionotes");
-        adapter.addFragment(new NoteFragment(), "Videonotes");
+        adapter.addFragment(new AllNotesFragment(), "All");
+        adapter.addFragment(new AllNotesFragment(), "Textnotes");
+        adapter.addFragment(new AllNotesFragment(), "Audionotes");
+        adapter.addFragment(new AllNotesFragment(), "Videonotes");
 //        adapter.addFragment(new NoteFragment(), "Picnotes");
         viewPager.setAdapter(adapter);
     }

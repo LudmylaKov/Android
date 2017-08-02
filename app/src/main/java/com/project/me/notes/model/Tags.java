@@ -1,12 +1,15 @@
+/*
 package com.project.me.notes.model;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
 
+*/
 /**
  * Created by Sazumi on 26.06.2017.
- */
+ *//*
+
 
 public class Tags extends RealmObject {
     @PrimaryKey
@@ -38,3 +41,4 @@ public class Tags extends RealmObject {
         this.tag = tag;
     }
 }
+*/
