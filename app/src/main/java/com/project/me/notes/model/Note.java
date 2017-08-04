@@ -23,19 +23,39 @@ public class Note extends RealmObject {
     private Tag tag;
     private RealmList<Media> media;
     private Notification notification;
+    private boolean isAudio;
+    private boolean isVideo;
+    private boolean isLik;
 
     public Note() {
     }
 
-    public Note(Long timestamp, String title, String text, Tag tag, RealmList<Media> media, Notification notification) {
+    public Note(int id, Long timestamp, String title, String text, Tag tag, RealmList<Media> media, Notification notification,
+                boolean isAudio, boolean isVideo, boolean isLik) {
+        this.id = id;
         this.timestamp = timestamp;
         this.title = title;
         this.text = text;
         this.tag = tag;
         this.media = media;
         this.notification = notification;
+        this.isAudio = isAudio;
+        this.isVideo = isVideo;
+        this.isLik = isLik;
     }
+    public Note(Long timestamp, String title, String text, Tag tag, RealmList<Media> media, Notification notification,
+                boolean isAudio, boolean isVideo, boolean isLik) {
 
+        this.timestamp = timestamp;
+        this.title = title;
+        this.text = text;
+        this.tag = tag;
+        this.media = media;
+        this.notification = notification;
+        this.isAudio = isAudio;
+        this.isVideo = isVideo;
+        this.isLik = isLik;
+    }
     public int getId() {
         return id;
     }
@@ -68,14 +88,6 @@ public class Note extends RealmObject {
         this.text = text;
     }
 
-    public Tag getTags() {
-        return tag;
-    }
-
-    public void setTags(Tag tag) {
-        this.tag = tag;
-    }
-
     public RealmList<Media> getMedia() {
         return media;
     }
@@ -90,6 +102,38 @@ public class Note extends RealmObject {
 
     public void setNotification(Notification notification) {
         this.notification = notification;
+    }
+
+    public Tag getTag() {
+        return tag;
+    }
+
+    public void setTag(Tag tag) {
+        this.tag = tag;
+    }
+
+    public boolean isAudio() {
+        return isAudio;
+    }
+
+    public void setAudio(boolean audio) {
+        isAudio = audio;
+    }
+
+    public boolean isVideo() {
+        return isVideo;
+    }
+
+    public void setVideo(boolean video) {
+        isVideo = video;
+    }
+
+    public boolean isLik() {
+        return isLik;
+    }
+
+    public void setLik(boolean lik) {
+        isLik = lik;
     }
 }
 

@@ -1,16 +1,22 @@
 package com.project.me.notes;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.project.me.notes.model.Note;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Sazumi on 25.07.2017.
@@ -52,14 +58,36 @@ public class NotesCardAdapter extends RecyclerView.Adapter<NotesCardAdapter.MyVi
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position){
         Note note = notes.get(position);
-        holder.tag.setText(note.getTags().getTagName());
+
+       // ColorDrawable color = new ColorDrawable(note.getTag().getColorValue());
+        holder.tag.setText(note.getTag().getTagName());
+        holder.tag.setBackgroundResource(note.getTag().getColorValue());
+
         holder.title.setText(note.getTitle());
         holder.text.setText(note.getText());
-        holder.date.setText(note.getTimestamp().toString());
-        if(note.getNotification()!=null){
+
+
+        String dateString = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date(note.getTimestamp()));
+        holder.date.setText(dateString);
+
+        if(note.getNotification()!=null && note.getNotification().isNotification()){
             holder.notification.setVisibility(View.VISIBLE);
         }
-        //TODO showing video, audio, notification icons
+        if(note.isVideo()){
+            holder.video.setVisibility(View.VISIBLE);
+        }
+
+        if(note.isAudio()){
+            holder.audio.setVisibility(View.VISIBLE);
+        }
+
+        if(note.isAudio()&&!note.isVideo()){
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
+            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+            holder.audio.setLayoutParams(params);
+        }
+
 
         holder.text.setOnClickListener(new View.OnClickListener() {
             @Override

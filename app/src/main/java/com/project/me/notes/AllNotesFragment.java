@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.project.me.notes.model.Note;
+import com.project.me.notes.model.Notification;
 import com.project.me.notes.model.Tag;
 import com.tubb.smrv.SwipeMenuLayout;
 import com.tubb.smrv.listener.SimpleSwipeSwitchListener;
@@ -70,17 +71,19 @@ public class AllNotesFragment extends Fragment {
 
     private void prepareNotes(){
         Tag t = new Tag("tag1", R.color.colorAccent);
-        Tag t2 = new Tag("tag2", R.color.colorPrimary);
+        Tag t2 = new Tag("tag2", R.color.colorTest);
 
-        Note n = new Note(12345L, "new 1", "text1text", t, null, null);
+        Notification notification = new Notification(null, true);
+
+        Note n = new Note(1343805819061L, "new 1", "text1text", t, null, null, true, false, false);
         noteList.add(n);
-         n = new Note(12345L, "new 2", "text234234234text", t2, null, null);
+         n = new Note(1343805819061L, "new 2", "text234234234text", t2, null, null, true, true, false);
         noteList.add(n);
-         n = new Note(12345L, "new 3", "texttqrgqrgqrg1text", t, null, null);
+         n = new Note(1343805819061L, "new 3", "texttqrgqrgqrg1text", t, null, notification, false, true, false);
         noteList.add(n);
-         n = new Note(12345L, "new 4", "textdqfgqgqehg1text", t2, null, null);
+         n = new Note(1343805819061L, "new 4", "textdqfgqgqehg1text", t2, null, null, false, false, false);
         noteList.add(n);
-         n = new Note(12345L, "new 5", "text1qhqehqerhhqtext", t, null, null);
+         n = new Note(1343805819061L, "new 5", "text1qhqehqerhhqtext", t, null, notification, false, true, false);
         noteList.add(n);
 
         notesCardAdapter.notifyDataSetChanged();

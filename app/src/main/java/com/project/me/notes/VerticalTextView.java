@@ -39,6 +39,7 @@ public class VerticalTextView extends android.support.v7.widget.AppCompatTextVie
     protected void onDraw(Canvas canvas) {
         TextPaint textPaint = getPaint();
         textPaint.setColor(getCurrentTextColor());
+
         textPaint.drawableState = getDrawableState();
 
         canvas.save();
@@ -52,8 +53,20 @@ public class VerticalTextView extends android.support.v7.widget.AppCompatTextVie
         }
 
         canvas.translate(getCompoundPaddingLeft(), getExtendedPaddingTop());
-
+        //canvas.drawColor(get);
         getLayout().draw(canvas);
         canvas.restore();
     }
+    @Override
+    public void draw(Canvas canvas) {
+
+        //canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), mShadow);
+
+        /*
+            Draw the background setting by XML definition android:background
+         */
+        super.draw(canvas);
+
+    }
+
 }
