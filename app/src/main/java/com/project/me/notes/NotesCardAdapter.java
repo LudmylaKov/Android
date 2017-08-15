@@ -67,7 +67,7 @@ public class NotesCardAdapter extends RecyclerView.Adapter<NotesCardAdapter.MyVi
         holder.text.setText(note.getText());
 
 
-        String dateString = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date(note.getTimestamp()));
+        String dateString = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date(note.getTimeStamp()));
         holder.date.setText(dateString);
 
         if(note.getNotification()!=null && note.getNotification().isNotification()){

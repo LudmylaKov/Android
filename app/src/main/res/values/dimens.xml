@@ -6,4 +6,23 @@
     <dimen name="tab_max_width">264dp</dimen>
     <dimen name="tab_padding_bottom">16dp</dimen>
     <dimen name="tab_label">14sp</dimen>
+
+    <!--font size-->
+    <dimen name="medium_date_size">18sp</dimen>
+    <dimen name="medium_title_size">22sp</dimen>
+    <dimen name="medium_text_size">20sp</dimen>
+    <dimen name="medium_notification_size">18sp</dimen>
+    <dimen name="medium_tag_size">18sp</dimen>
+
+    <dimen name="small_date_size">8sp</dimen>
+    <dimen name="small_title_size">12sp</dimen>
+    <dimen name="small_text_size">10sp</dimen>
+    <dimen name="small_notification_size">8sp</dimen>
+    <dimen name="small_tag_size">8sp</dimen>
+
+    <dimen name="large_date_size">28sp</dimen>
+    <dimen name="large_title_size">32sp</dimen>
+    <dimen name="large_text_size">30sp</dimen>
+    <dimen name="large_notification_size">28sp</dimen>
+    <dimen name="large_tag_size">28sp</dimen>
 </resources>

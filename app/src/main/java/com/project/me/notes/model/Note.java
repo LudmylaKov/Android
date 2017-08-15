@@ -16,7 +16,7 @@ public class Note extends RealmObject {
     @PrimaryKey
     private int id;
     @Required
-    private Long timestamp;
+    private Long timeStamp;
     private String title;
     @Required
     private String text;
@@ -30,10 +30,10 @@ public class Note extends RealmObject {
     public Note() {
     }
 
-    public Note(int id, Long timestamp, String title, String text, Tag tag, RealmList<Media> media, Notification notification,
+    public Note(int id, Long timeStamp, String title, String text, Tag tag, RealmList<Media> media, Notification notification,
                 boolean isAudio, boolean isVideo, boolean isLik) {
         this.id = id;
-        this.timestamp = timestamp;
+        this.timeStamp = timeStamp;
         this.title = title;
         this.text = text;
         this.tag = tag;
@@ -43,10 +43,10 @@ public class Note extends RealmObject {
         this.isVideo = isVideo;
         this.isLik = isLik;
     }
-    public Note(Long timestamp, String title, String text, Tag tag, RealmList<Media> media, Notification notification,
+    public Note(Long timeStamp, String title, String text, Tag tag, RealmList<Media> media, Notification notification,
                 boolean isAudio, boolean isVideo, boolean isLik) {
 
-        this.timestamp = timestamp;
+        this.timeStamp = timeStamp;
         this.title = title;
         this.text = text;
         this.tag = tag;
@@ -64,12 +64,12 @@ public class Note extends RealmObject {
         this.id = id;
     }
 
-    public Long getTimestamp() {
-        return timestamp;
+    public Long getTimeStamp() {
+        return timeStamp;
     }
 
-    public void setTimestamp(Long timestamp) {
-        this.timestamp = timestamp;
+    public void setTimeStamp(Long timeStamp) {
+        this.timeStamp = timeStamp;
     }
 
     public String getTitle() {
