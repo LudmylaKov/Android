@@ -3,25 +3,20 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/font_small"
-            android:icon="@drawable/ic_tag_black_24dp"
             android:checkable="true"
-            android:title="@string/font_small"
-            >
-        </item>
+            android:icon="@drawable/ic_tag_black_24dp"
+            android:title="@string/font_small"></item>
         <item
             android:id="@+id/font_medium"
-            android:icon="@drawable/ic_tag_black_24dp"
             android:checkable="true"
-            android:title="@string/font_medium"
-            >
-        </item>
+            android:icon="@drawable/ic_tag_black_24dp"
+            android:title="@string/font_medium"></item>
         <item
             android:id="@+id/font_large"
-            android:icon="@drawable/ic_tag_black_24dp"
             android:checkable="true"
+            android:icon="@drawable/ic_tag_black_24dp"
             android:title="@string/font_large"
 
-            >
-        </item>
+            ></item>
     </group>
 </menu>

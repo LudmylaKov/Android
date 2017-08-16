@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -60,11 +60,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        RealmConfiguration config = new RealmConfiguration.Builder().build();
-        Realm.setDefaultConfiguration(config);
+//        RealmConfiguration config = new RealmConfiguration.Builder().build();
+//        Realm.setDefaultConfiguration(config);
+        Realm.init(this);
+        Realm realm = Realm.getDefaultInstance();
 
         /*Realm.init(this);
-        Realm realm = Realm.getDefaultInstance();
 
 
         realm.executeTransactionAsync(new Realm.Transaction() {
@@ -99,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new AllNotesFragment(), "All");
@@ -137,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
             return mFragmentTitleList.get(position);
         }
     }
-
 
 
     //menu start
@@ -183,8 +184,8 @@ public class MainActivity extends AppCompatActivity {
         // Any other things you have to do when creating the options menu…*/
 
 
-      return true;
-       // return super.onCreateOptionsMenu(menu);
+        return true;
+        // return super.onCreateOptionsMenu(menu);
     }
 
 
