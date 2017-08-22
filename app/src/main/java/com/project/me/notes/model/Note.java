@@ -25,13 +25,15 @@ public class Note extends RealmObject {
     private Notification notification;
     private boolean isAudio;
     private boolean isVideo;
-    private boolean isLik;
-
+    private boolean isLink;
+    private int fontSize;
+    private int textColor;
+    
     public Note() {
     }
 
-    public Note(int id, Long timeStamp, String title, String text, Tag tag, RealmList<Media> media, Notification notification,
-                boolean isAudio, boolean isVideo, boolean isLik) {
+    public Note(int id, Long timeStamp, String title, String text, Tag tag, RealmList<Media> media, Notification notification, 
+                boolean isAudio, boolean isVideo, boolean isLink, int fontSize, int textColor) {
         this.id = id;
         this.timeStamp = timeStamp;
         this.title = title;
@@ -41,10 +43,26 @@ public class Note extends RealmObject {
         this.notification = notification;
         this.isAudio = isAudio;
         this.isVideo = isVideo;
-        this.isLik = isLik;
+        this.isLink = isLink;
+        this.fontSize = fontSize;
+        this.textColor = textColor;
+    }
+
+    public Note(int id, Long timeStamp, String title, String text, Tag tag, RealmList<Media> media, Notification notification,
+                boolean isAudio, boolean isVideo, boolean isLink) {
+        this.id = id;
+        this.timeStamp = timeStamp;
+        this.title = title;
+        this.text = text;
+        this.tag = tag;
+        this.media = media;
+        this.notification = notification;
+        this.isAudio = isAudio;
+        this.isVideo = isVideo;
+        this.isLink = isLink;
     }
     public Note(Long timeStamp, String title, String text, Tag tag, RealmList<Media> media, Notification notification,
-                boolean isAudio, boolean isVideo, boolean isLik) {
+                boolean isAudio, boolean isVideo, boolean isLink) {
 
         this.timeStamp = timeStamp;
         this.title = title;
@@ -54,7 +72,7 @@ public class Note extends RealmObject {
         this.notification = notification;
         this.isAudio = isAudio;
         this.isVideo = isVideo;
-        this.isLik = isLik;
+        this.isLink = isLink;
     }
     public int getId() {
         return id;
@@ -128,12 +146,28 @@ public class Note extends RealmObject {
         isVideo = video;
     }
 
-    public boolean isLik() {
-        return isLik;
+    public boolean isLink() {
+        return isLink;
     }
 
-    public void setLik(boolean lik) {
-        isLik = lik;
+    public void setLink(boolean link) {
+        isLink = link;
+    }
+
+    public int getFontSize() {
+        return fontSize;
+    }
+
+    public void setFontSize(int fontSize) {
+        this.fontSize = fontSize;
+    }
+
+    public int getTextColor() {
+        return textColor;
+    }
+
+    public void setTextColor(int textColor) {
+        this.textColor = textColor;
     }
 }
 

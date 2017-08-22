@@ -60,14 +60,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        RealmConfiguration config = new RealmConfiguration.Builder().build();
-//        Realm.setDefaultConfiguration(config);
+
         Realm.init(this);
+
+        RealmConfiguration config = new RealmConfiguration.Builder().deleteRealmIfMigrationNeeded().build();
+        Realm.setDefaultConfiguration(config);
         Realm realm = Realm.getDefaultInstance();
 
-        /*Realm.init(this);
-
-
+        /*Realm.init(this)
+        Realm realm = Realm.getDefaultInstance();
         realm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {

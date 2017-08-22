@@ -1,6 +1,7 @@
 package com.project.me.notes;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,9 +19,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Created by Sazumi on 25.07.2017.
- */
 
 public class NotesCardAdapter extends RecyclerView.Adapter<NotesCardAdapter.MyViewHolder> {
     private Context mContext;
@@ -57,7 +55,7 @@ public class NotesCardAdapter extends RecyclerView.Adapter<NotesCardAdapter.MyVi
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position){
-        Note note = notes.get(position);
+        final Note note = notes.get(position);
 
        // ColorDrawable color = new ColorDrawable(note.getTag().getColorValue());
         holder.tag.setText(note.getTag().getTagName());
@@ -93,6 +91,10 @@ public class NotesCardAdapter extends RecyclerView.Adapter<NotesCardAdapter.MyVi
             @Override
             public void onClick(View v) {
                 //TODO open this note
+
+                Intent intent = new Intent(mContext, SingleNoteActivity.class);
+                intent.putExtra("ID", note.getId());
+                mContext.startActivity(intent);
             }
         });
     }

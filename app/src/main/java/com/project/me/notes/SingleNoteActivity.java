@@ -20,6 +20,7 @@ import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,26 +31,42 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.project.me.notes.model.ConstantType;
 import com.project.me.notes.model.Note;
+import com.project.me.notes.model.Tag;
 
 import java.util.Calendar;
 import java.util.Date;
 
+import io.realm.Realm;
+
 public class SingleNoteActivity extends AppCompatActivity {
     private static final int ACTIVITY_CHOOSE_FILE = 1;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 2;
-    private TextView mCurrentDate;
-    private EditText mTitleOfNote;
-    private EditText mTextOfNote;
-    private TextView mNotification;
-    private TextView mTagOfNote;
+
+    private TextView currentDate;
+    private EditText titleOfNote;
+    private EditText textOfNote;
+    private TextView notification;
+    private TextView tagOfNote;
     private ImageView attachmentImage;
 
     private Note thisNote;
-
+    Realm realm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        thisNote = new Note();
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            Integer id = extras.getInt("ID");
+            //TODO get note by id from realm
+        }
+        else{
+            thisNote.setFontSize(ConstantType.FONT_SIZE_MEDIUM);
+        }
+
+
         setContentView(R.layout.activity_single_note);
         Toolbar toolbarNote = (Toolbar) findViewById(R.id.toolbar_note);
         setSupportActionBar(toolbarNote);
@@ -66,72 +83,110 @@ public class SingleNoteActivity extends AppCompatActivity {
                 showPopUpMenuForFontSize(v);
             }
         });
+
+        //Realm.init(this);
+        realm = Realm.getDefaultInstance();
     }
 
     private void initialViews() {
-        mCurrentDate = (TextView) findViewById(R.id.currentDate);
-        mTitleOfNote = (EditText) findViewById(R.id.titleNote);
-        mTextOfNote = (EditText) findViewById(R.id.textNote);
-        mNotification = (TextView) findViewById(R.id.notificationNote);
-        mTagOfNote = (TextView) findViewById(R.id.tagNote);
+        currentDate = (TextView) findViewById(R.id.currentDate);
+        titleOfNote = (EditText) findViewById(R.id.titleNote);
+        textOfNote = (EditText) findViewById(R.id.textNote);
+        notification = (TextView) findViewById(R.id.notificationNote);
+        tagOfNote = (TextView) findViewById(R.id.tagNote);
         attachmentImage = (ImageView) findViewById(R.id.attachment_image);
-        thisNote = new Note();
-        //mCurrentDate.setText(DateFormat.format("HH:mm dd/MM/yyyy", new Date()).toString());
+
+        //currentDate.setText(DateFormat.format("HH:mm dd/MM/yyyy", new Date()).toString());
         //long time = System.currentTimeMillis();
         //long time2 = currentTime.get(Calendar.ZONE_OFFSET)+currentTime.get(Calendar.DST_OFFSET);
 
         Calendar currentTime = Calendar.getInstance();
         long time3 = currentTime.getTimeInMillis();
-        mCurrentDate.setText(DateFormat.format("HH:mm dd/MM/yyyy", currentTime).toString());
+        currentDate.setText(DateFormat.format("HH:mm dd/MM/yyyy", currentTime).toString());
 
         thisNote.setTimeStamp(time3);
+
+        setTextSize(thisNote.getFontSize());
+    }
+
+    private void setTextSize(int fontSize) {
+        switch (fontSize){
+            case ConstantType.FONT_SIZE_SMALL:
+                currentDate.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                        getResources().getDimension(R.dimen.small_date_size));
+                titleOfNote.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                        getResources().getDimension(R.dimen.small_title_size));
+                textOfNote.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                        getResources().getDimension(R.dimen.small_text_size));
+                notification.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                        getResources().getDimension(R.dimen.small_notification_size));
+                tagOfNote.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                        getResources().getDimension(R.dimen.small_tag_size));
+                thisNote.setFontSize(ConstantType.FONT_SIZE_SMALL);
+                break;
+            case ConstantType.FONT_SIZE_MEDIUM:
+                currentDate.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                        getResources().getDimension(R.dimen.medium_date_size));
+                titleOfNote.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                        getResources().getDimension(R.dimen.medium_title_size));
+                textOfNote.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                        getResources().getDimension(R.dimen.medium_text_size));
+                notification.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                        getResources().getDimension(R.dimen.medium_notification_size));
+                tagOfNote.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                        getResources().getDimension(R.dimen.medium_tag_size));
+                thisNote.setFontSize(ConstantType.FONT_SIZE_MEDIUM);
+                break;
+            case ConstantType.FONT_SIZE_LARGE:
+                currentDate.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                        getResources().getDimension(R.dimen.large_date_size));
+                titleOfNote.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                        getResources().getDimension(R.dimen.large_title_size));
+                textOfNote.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                        getResources().getDimension(R.dimen.large_text_size));
+                notification.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                        getResources().getDimension(R.dimen.large_notification_size));
+                tagOfNote.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                        getResources().getDimension(R.dimen.large_tag_size));
+                thisNote.setFontSize(ConstantType.FONT_SIZE_LARGE);
+                break;
+        }
     }
 
     //POPUP MENU
     private void showPopUpMenuForFontSize(View v) {
-        PopupMenu popupMenu = new PopupMenu(this, v);
+        final PopupMenu popupMenu = new PopupMenu(this, v);
         popupMenu.inflate(R.menu.popupmenu_font_size);
+        if(currentDate.getTextSize()==getResources().getDimension(R.dimen.small_date_size)){
+            popupMenu.getMenu().findItem(R.id.font_small).setChecked(true);
+        }
+        if(currentDate.getTextSize()==getResources().getDimension(R.dimen.medium_date_size)){
+            popupMenu.getMenu().findItem(R.id.font_medium).setChecked(true);
+        }
+        if(currentDate.getTextSize()==getResources().getDimension(R.dimen.large_date_size)){
+            popupMenu.getMenu().findItem(R.id.font_large).setChecked(true);
+        }
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+
                 switch (item.getItemId()) {
                     case R.id.font_small:
-                        mCurrentDate.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                                getResources().getDimension(R.dimen.small_date_size));
-                        mTitleOfNote.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                                getResources().getDimension(R.dimen.small_title_size));
-                        mTextOfNote.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                                getResources().getDimension(R.dimen.small_text_size));
-                        mNotification.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                                getResources().getDimension(R.dimen.small_notification_size));
-                        mTagOfNote.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                                getResources().getDimension(R.dimen.small_tag_size));
+                        setTextSize(ConstantType.FONT_SIZE_SMALL);
+                        popupMenu.getMenu().findItem(R.id.font_large).setChecked(false);
+                        popupMenu.getMenu().findItem(R.id.font_medium).setChecked(false);
                         item.setChecked(true);
                         break;
                     case R.id.font_medium:
-                        mCurrentDate.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                                getResources().getDimension(R.dimen.medium_date_size));
-                        mTitleOfNote.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                                getResources().getDimension(R.dimen.medium_title_size));
-                        mTextOfNote.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                                getResources().getDimension(R.dimen.medium_text_size));
-                        mNotification.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                                getResources().getDimension(R.dimen.medium_notification_size));
-                        mTagOfNote.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                                getResources().getDimension(R.dimen.medium_tag_size));
+                        setTextSize(ConstantType.FONT_SIZE_MEDIUM);
+                        popupMenu.getMenu().findItem(R.id.font_large).setChecked(false);
+                        popupMenu.getMenu().findItem(R.id.font_small).setChecked(false);
                         item.setChecked(true);
                         break;
                     case R.id.font_large:
-                        mCurrentDate.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                                getResources().getDimension(R.dimen.large_date_size));
-                        mTitleOfNote.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                                getResources().getDimension(R.dimen.large_title_size));
-                        mTextOfNote.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                                getResources().getDimension(R.dimen.large_text_size));
-                        mNotification.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                                getResources().getDimension(R.dimen.large_notification_size));
-                        mTagOfNote.setTextSize(TypedValue.COMPLEX_UNIT_SP,
-                                getResources().getDimension(R.dimen.large_tag_size));
+                        setTextSize(ConstantType.FONT_SIZE_LARGE);
+                        popupMenu.getMenu().findItem(R.id.font_small).setChecked(false);
+                        popupMenu.getMenu().findItem(R.id.font_medium).setChecked(false);
                         item.setChecked(true);
                         break;
                 }
@@ -219,11 +274,10 @@ public class SingleNoteActivity extends AppCompatActivity {
             case R.id.action_share_note:
                 // open dialog to share the note
                 return true;
-//            default:
+            default:
             // If we got here, the user's action was not recognized.
             // Invoke the superclass to handle it.
-
-//                saveData();
+                onBackPressed();
 
         }
         return super.onOptionsItemSelected(item);
@@ -258,7 +312,7 @@ public class SingleNoteActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)
-                .setTitle("Sdsfds")
+                .setTitle("Save this note?")
                 .setPositiveButton("yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -277,8 +331,90 @@ public class SingleNoteActivity extends AppCompatActivity {
     }
 
     private void saveData() {
-        if (!TextUtils.isEmpty(mTitleOfNote.getText())) {
-
+        //text and title empty
+        if (TextUtils.isEmpty(titleOfNote.getText().toString().trim())&&TextUtils.isEmpty(textOfNote.getText().toString().trim())) {
+            return;
         }
+        else {
+            realm.executeTransactionAsync(new Realm.Transaction() {
+                          @Override
+                          public void execute(Realm realm) {
+                              // increment index
+                              Number currentIdNum = realm.where(Note.class).max("id");
+                              int nextId;
+                              if (currentIdNum == null) {
+                                  nextId = 1;
+                              } else {
+                                  nextId = currentIdNum.intValue() + 1;
+                              }
+
+                              Note note = realm.createObject(Note.class, nextId);
+                             // note.setId(nextId);
+                              note.setText(textOfNote.getText().toString());
+                              if(TextUtils.isEmpty(titleOfNote.getText().toString().trim())){
+                                  note.setTitle(textOfNote.getText().toString().substring(0, 19));
+                              }
+                              else{
+                                  note.setTitle(titleOfNote.getText().toString());
+                              }
+
+                              note.setTimeStamp(thisNote.getTimeStamp());
+
+                              if(tagOfNote.getText()!=null){
+                                  currentIdNum = realm.where(Tag.class).max("id");
+
+                                  if (currentIdNum == null) {
+                                      nextId = 1;
+                                  } else {
+                                      nextId = currentIdNum.intValue() + 1;
+                                  }
+                                  Tag tag = realm.createObject(Tag.class, nextId);
+                                  //tag.setId(nextId);
+                                  tag.setTagName(tagOfNote.getText().toString());
+                                  tag.setColorValue(ConstantType.TAG_COLOR);//TODO save bg tag color
+                                 // realm.insertOrUpdate(tag);
+                                  note.setTag(tag);
+                              }
+
+                              note.setTextColor(textOfNote.getCurrentTextColor());
+                              note.setFontSize(thisNote.getFontSize());
+
+
+                              //realm.insertOrUpdate(note);
+
+                          }
+                      },
+                    new Realm.Transaction.OnSuccess() {
+                        @Override
+                        public void onSuccess() {
+                            // Transaction was a success.
+                            Log.d("realm", "save succes");
+                           // Toast.makeText(getParent(), "save", Toast.LENGTH_LONG).show();
+                        }
+                    },
+                    new Realm.Transaction.OnError() {
+                        @Override
+                        public void onError(Throwable error) {
+                            // Transaction failed and was automatically canceled.
+                            Log.d("realm", error.getMessage());
+                           // Toast.makeText(getParent(), "fauil", Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+            );
+        }
+    }
+
+    /*private boolean notEmptyTextField(EditText editText){
+        if(!TextUtils.isEmpty(editText.getText())&&editText.getText().toString().trim().length() > 0){
+            return true;
+        }
+        else return false;
+    }*/
+    @Override
+
+    public void onDestroy() {
+        super.onDestroy();
+        realm.close();
     }
 }

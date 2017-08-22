@@ -26,6 +26,8 @@ import com.tubb.smrv.listener.SimpleSwipeSwitchListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -35,6 +37,7 @@ public class AllNotesFragment extends Fragment {
     private RecyclerView recyclerView;
     private NotesCardAdapter notesCardAdapter;
     private List<Note> noteList;
+    Realm realm;
 
     public AllNotesFragment() {
         // Required empty public constructor
@@ -42,8 +45,9 @@ public class AllNotesFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
+        super.onCreate(savedInstanceState);
+        realm = Realm.getDefaultInstance();
     }
 
     @Override
@@ -65,6 +69,9 @@ public class AllNotesFragment extends Fragment {
         recyclerView.setAdapter(notesCardAdapter);
 
         prepareNotes();
+
+
+
 
         return v;
     }
@@ -133,5 +140,12 @@ public class AllNotesFragment extends Fragment {
     private int dpToPx(int dp) {
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    }
+
+    @Override
+
+    public void onDestroy() {
+        super.onDestroy();
+        realm.close();
     }
 }

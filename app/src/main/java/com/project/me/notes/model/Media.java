@@ -13,12 +13,12 @@ public class Media extends RealmObject {
     private int id;
     @Required
     private String filePath;
-    private String fileType;
+    private int fileType;
 
     public Media() {
     }
 
-    public Media(int id, String filePath, String fileType) {
+    public Media(int id, String filePath, int fileType) {
         this.id = id;
         this.filePath = filePath;
         this.fileType = fileType;
@@ -40,11 +40,11 @@ public class Media extends RealmObject {
         this.filePath = filePath;
     }
 
-    public String getFileType() {
+    public int getFileType() {
         return fileType;
     }
 
-    public void setFileType(String fileType) {
+    public void setFileType(int fileType) {
         this.fileType = fileType;
     }
 }
