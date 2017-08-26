@@ -105,9 +105,9 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new AllNotesFragment(), "All");
-        adapter.addFragment(new AllNotesFragment(), "Textnotes");
+        /*adapter.addFragment(new AllNotesFragment(), "Textnotes");
         adapter.addFragment(new AllNotesFragment(), "Audionotes");
-        adapter.addFragment(new AllNotesFragment(), "Videonotes");
+        adapter.addFragment(new AllNotesFragment(), "Videonotes");*/
 //        adapter.addFragment(new NoteFragment(), "Picnotes");
         viewPager.setAdapter(adapter);
     }

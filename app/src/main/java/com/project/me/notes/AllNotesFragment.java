@@ -48,6 +48,8 @@ public class AllNotesFragment extends Fragment {
 
         super.onCreate(savedInstanceState);
         realm = Realm.getDefaultInstance();
+        Fragment fr = this;
+
     }
 
     @Override
@@ -77,22 +79,54 @@ public class AllNotesFragment extends Fragment {
     }
 
     private void prepareNotes(){
-        Tag t = new Tag("tag1", R.color.colorAccent);
-        Tag t2 = new Tag("tag2", R.color.colorTest);
 
-        Notification notification = new Notification(null, true);
+        final Tag t = new Tag("tag1", R.color.colorAccent);
+        t.setId(1);
+        final Tag t2 = new Tag("tag2", R.color.colorTest);
+        t2.setId(2);
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealmOrUpdate(t);
+                realm.copyToRealmOrUpdate(t2);
+            }
+        });
+        final Notification notification = new Notification(null, true);
+        notification.setId(1);
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealmOrUpdate(notification);
+            }
+        });
 
-        Note n = new Note(1343805819061L, "new 1", "text1text", t, null, null, true, false, false);
-        noteList.add(n);
-         n = new Note(1343805819061L, "new 2", "text234234234text", t2, null, null, true, true, false);
-        noteList.add(n);
-         n = new Note(1343805819061L, "new 3", "texttqrgqrgqrg1text", t, null, notification, false, true, false);
-        noteList.add(n);
-         n = new Note(1343805819061L, "new 4", "textdqfgqgqehg1text", t2, null, null, false, false, false);
-        noteList.add(n);
-         n = new Note(1343805819061L, "new 5", "text1qhqehqerhhqtext", t, null, notification, false, true, false);
-        noteList.add(n);
+        final Note n = new Note(1343805819061L, "new 1", "text1text", t, null, null, true, false, false);
+        n.setId(1);
+        //noteList.add(n);
+        final Note n2 = new Note(1343805819061L, "new 2", "text234234234text", t2, null, null, true, true, false);
+        n2.setId(2);
+        //noteList.add(n);
+        final Note n3 = new Note(1343805819061L, "new 3", "texttqrgqrgqrg1text", t, null, notification, false, true, false);
+        n3.setId(3);
+       // noteList.add(n);
+        final Note n4 = new Note(1343805819061L, "new 4", "textdqfgqgqehg1text", t2, null, null, false, false, false);
+        n4.setId(4);
+       // noteList.add(n);
+        final Note n5 = new Note(1343805819061L, "new 5", "text1qhqehqerhhqtext", t, null, notification, false, true, false);
+        n5.setId(5);
+     //   noteList.add(n);
 
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealmOrUpdate(n);
+                realm.copyToRealmOrUpdate(n2);
+                realm.copyToRealmOrUpdate(n3);
+                realm.copyToRealmOrUpdate(n4);
+                realm.copyToRealmOrUpdate(n5);
+            }
+        });
+        noteList = realm.where(Note.class).findAll();
         notesCardAdapter.notifyDataSetChanged();
     }
 
