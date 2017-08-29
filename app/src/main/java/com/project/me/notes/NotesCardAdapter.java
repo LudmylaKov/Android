@@ -19,10 +19,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import io.realm.OrderedRealmCollection;
+import io.realm.RealmCollection;
+import io.realm.RealmRecyclerViewAdapter;
+import io.realm.RealmResults;
 
-public class NotesCardAdapter extends RecyclerView.Adapter<NotesCardAdapter.MyViewHolder> {
+
+public class NotesCardAdapter extends RealmRecyclerViewAdapter<Note, NotesCardAdapter.MyViewHolder> {
     private Context mContext;
-    private List<Note> notes;
+    private RealmCollection<Note> notes;
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         public VerticalTextView tag;
@@ -40,11 +45,14 @@ public class NotesCardAdapter extends RecyclerView.Adapter<NotesCardAdapter.MyVi
             notification = (ImageView) view.findViewById(R.id.notification);
         }
     }
-
-    public NotesCardAdapter(Context mContext, List<Note> notes){
+    public NotesCardAdapter(OrderedRealmCollection<Note> data) {
+        super(data, true);
+        setHasStableIds(true);
+    }
+    /*public NotesCardAdapter(Context mContext, RealmCollection<Note> notes){
         this.mContext = mContext;
         this.notes = notes;
-    }
+    }*/
 
     @Override
     public MyViewHolder onCreateViewHolder (ViewGroup parent, int viewType){
@@ -55,7 +63,7 @@ public class NotesCardAdapter extends RecyclerView.Adapter<NotesCardAdapter.MyVi
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position){
-        final Note note = notes.get(position);
+        final Note note = getItem(position);
 
        // ColorDrawable color = new ColorDrawable(note.getTag().getColorValue());
         holder.tag.setText(note.getTag().getTagName());
@@ -100,6 +108,10 @@ public class NotesCardAdapter extends RecyclerView.Adapter<NotesCardAdapter.MyVi
     }
     @Override
     public int getItemCount() {
-        return notes.size();
+        if(notes!=null) {
+            return notes.size();
+        }
+        return 0;
     }
+
 }

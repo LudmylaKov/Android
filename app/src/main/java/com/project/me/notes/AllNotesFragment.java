@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,7 +37,7 @@ public class AllNotesFragment extends Fragment {
     private SwipeMenuLayout sml;
     private RecyclerView recyclerView;
     private NotesCardAdapter notesCardAdapter;
-    private List<Note> noteList;
+    private RealmResults<Note> noteList;
     Realm realm;
 
     public AllNotesFragment() {
@@ -47,8 +48,8 @@ public class AllNotesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        realm = Realm.getDefaultInstance();
-        Fragment fr = this;
+
+
 
     }
 
@@ -56,12 +57,12 @@ public class AllNotesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_notes, container, false);
-
+        realm = Realm.getDefaultInstance();
         sml = (SwipeMenuLayout) v.findViewById(R.id.sml);
 
         recyclerView = (RecyclerView) v.findViewById(R.id.smContentView);
-        noteList = new ArrayList<>();
-        notesCardAdapter = new NotesCardAdapter(this.getContext(), noteList);
+        //noteList = new ArrayList<>();
+        notesCardAdapter = new NotesCardAdapter(realm.where(Note.class).findAll());
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this.getContext(), 2);
 //        RecyclerView.LayoutManager layoutManager2 = new LinearLayoutManager(this.getActivity());
@@ -126,7 +127,7 @@ public class AllNotesFragment extends Fragment {
                 realm.copyToRealmOrUpdate(n5);
             }
         });
-        noteList = realm.where(Note.class).findAll();
+        //noteList = realm.where(Note.class).findAll();
         notesCardAdapter.notifyDataSetChanged();
     }
 
@@ -180,6 +181,7 @@ public class AllNotesFragment extends Fragment {
 
     public void onDestroy() {
         super.onDestroy();
+        recyclerView.setAdapter(null);
         realm.close();
     }
 }
