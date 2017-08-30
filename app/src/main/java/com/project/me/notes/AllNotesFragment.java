@@ -127,8 +127,8 @@ public class AllNotesFragment extends Fragment {
                 realm.copyToRealmOrUpdate(n5);
             }
         });
-        //noteList = realm.where(Note.class).findAll();
-        notesCardAdapter.notifyDataSetChanged();
+        noteList = realm.where(Note.class).findAll();
+        notesCardAdapter.setItems(noteList);
     }
 
     /**
