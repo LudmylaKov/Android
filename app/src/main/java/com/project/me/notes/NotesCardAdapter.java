@@ -2,12 +2,16 @@ package com.project.me.notes;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewDebug;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,15 +23,23 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import io.realm.OrderedRealmCollection;
+import io.realm.RealmCollection;
+import io.realm.RealmRecyclerViewAdapter;
+import io.realm.RealmResults;
 
-public class NotesCardAdapter extends RecyclerView.Adapter<NotesCardAdapter.MyViewHolder> {
+
+public class NotesCardAdapter extends RealmRecyclerViewAdapter<Note, NotesCardAdapter.MyViewHolder> {
     private Context mContext;
-    private List<Note> notes;
+    private RealmCollection<Note> notes;
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         public VerticalTextView tag;
         public TextView title, text, date;
         public ImageView video, audio, notification;
+        public Note data;
+
+        //public LinearLayout taglLayout;
 
         public MyViewHolder(View view){
             super(view);
@@ -38,35 +50,52 @@ public class NotesCardAdapter extends RecyclerView.Adapter<NotesCardAdapter.MyVi
             video = (ImageView) view.findViewById(R.id.video);
             audio = (ImageView) view.findViewById(R.id.audio);
             notification = (ImageView) view.findViewById(R.id.notification);
+
+            //taglLayout = (LinearLayout)view.findViewById(R.id.taglLayout);
         }
     }
-
-    public NotesCardAdapter(Context mContext, List<Note> notes){
+    String g;
+    public NotesCardAdapter(OrderedRealmCollection<Note> data) {
+        super(data, true);
+        g = data.size()+"m";
+        Log.i("noteadapter", g);
+        setHasStableIds(true);
+    }
+   /* public NotesCardAdapter(Context mContext, OrderedRealmCollection<Note> notes){
         this.mContext = mContext;
         this.notes = notes;
+    }*/
+    public void setmContext(Context context){
+        mContext = context;
     }
-
     @Override
     public MyViewHolder onCreateViewHolder (ViewGroup parent, int viewType){
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.note_grid_card, parent, false);
+
         return new MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, int position){
-        final Note note = notes.get(position);
-
-       // ColorDrawable color = new ColorDrawable(note.getTag().getColorValue());
+    public void onBindViewHolder(MyViewHolder holder, int position){
+        final Note note = getItem(position);
+        holder.data = note;
+        // ColorDrawable color = new ColorDrawable(note.getTag().getColorValue());
         holder.tag.setText(note.getTag().getTagName());
-        holder.tag.setBackgroundResource(note.getTag().getColorValue());
+        Log.i("tags",note.getTag().getTagName());
+        holder.tag.setBackgroundColor(Color.parseColor(note.getTag().getColorValue()));
+        holder.tag.setTextColor(Color.WHITE);
+        //holder.tag.setBackgroundResource(note.getTag().getColorValue());
 
         holder.title.setText(note.getTitle());
+        Log.i("tags",note.getTitle());
         holder.text.setText(note.getText());
-
+        Log.i("tags",note.getText());
 
         String dateString = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date(note.getTimeStamp()));
         holder.date.setText(dateString);
+        Log.i("tags",dateString);
+
 
         if(note.getNotification()!=null && note.getNotification().isNotification()){
             holder.notification.setVisibility(View.VISIBLE);
@@ -95,11 +124,22 @@ public class NotesCardAdapter extends RecyclerView.Adapter<NotesCardAdapter.MyVi
                 Intent intent = new Intent(mContext, SingleNoteActivity.class);
                 intent.putExtra("ID", note.getId());
                 mContext.startActivity(intent);
+
             }
         });
     }
-    @Override
+    /*@Override
     public int getItemCount() {
-        return notes.size();
+        if(notes!=null) {
+            return notes.size();
+        }
+        return 0;
+    }*/
+    @Override
+    public long getItemId(int index) {
+        //noinspection ConstantConditions
+        return getItem(index).getId();
     }
+
 }
+

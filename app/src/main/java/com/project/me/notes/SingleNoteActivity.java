@@ -371,7 +371,7 @@ public class SingleNoteActivity extends AppCompatActivity {
                                   Tag tag = realm.createObject(Tag.class, nextId);
                                   //tag.setId(nextId);
                                   tag.setTagName(tagOfNote.getText().toString());
-                                  tag.setColorValue(ConstantType.TAG_COLOR);//TODO save bg tag color
+                                  tag.setColorValue(ConstantType.TAG_COLOR1);//TODO save bg tag color
                                  // realm.insertOrUpdate(tag);
                                   note.setTag(tag);
                               }
@@ -389,7 +389,7 @@ public class SingleNoteActivity extends AppCompatActivity {
                         public void onSuccess() {
                             // Transaction was a success.
                             Log.d("realm", "save succes");
-                           // Toast.makeText(getParent(), "save", Toast.LENGTH_LONG).show();
+                            Toast.makeText(SingleNoteActivity.this, "save", Toast.LENGTH_LONG).show();
                         }
                     },
                     new Realm.Transaction.OnError() {

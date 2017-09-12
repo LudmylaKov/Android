@@ -18,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.project.me.notes.model.ConstantType;
 import com.tubb.smrv.SwipeMenuLayout;
 import com.tubb.smrv.listener.SimpleSwipeSwitchListener;
 
@@ -66,48 +67,17 @@ public class MainActivity extends AppCompatActivity {
         RealmConfiguration config = new RealmConfiguration.Builder().deleteRealmIfMigrationNeeded().build();
         Realm.setDefaultConfiguration(config);
         Realm realm = Realm.getDefaultInstance();
-
-        /*Realm.init(this)
-        Realm realm = Realm.getDefaultInstance();
-        realm.executeTransactionAsync(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                Note note = realm.createObject(Note.class);
-                note.setId(0);
-                note.setText("new text");
-                note.setTitle("title");
-                note.setTimestamp((new Date()).getTime());//чи правильно?
-                ArrayList<String> tags = new ArrayList<String>();
-                tags.add("firstTag");
-                tags.add("secondTag");
-                note.setTags(tags);
-
-            }
-        },
-                    new Realm.Transaction.OnSuccess() {
-                @Override
-                public void onSuccess() {
-                    // Transaction was a success.
-                }
-            },
-                    new Realm.Transaction.OnError() {
-                @Override
-                public void onError(Throwable error) {
-                    // Transaction failed and was automatically canceled.
-                }
-
-            }
-        );*/
-
-
     }
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new AllNotesFragment(), "All");
-        adapter.addFragment(new AllNotesFragment(), "Textnotes");
-        adapter.addFragment(new AllNotesFragment(), "Audionotes");
-        adapter.addFragment(new AllNotesFragment(), "Videonotes");
+
+//        adapter.addFragment(new AllNotesFragment(), "All");
+//        adapter.addFragment(new AllNotesFragment(), "Textnotes");
+//        adapter.addFragment(new AllNotesFragment(), "Medianotes");
+        adapter.addFragment(AllNotesFragment.newInstance(ConstantType.All_NOTES), ConstantType.All_NOTES);
+        adapter.addFragment(AllNotesFragment.newInstance(ConstantType.TEXT_NOTES), ConstantType.TEXT_NOTES);
+        adapter.addFragment(AllNotesFragment.newInstance(ConstantType.MEDIA_NOTES), ConstantType.MEDIA_NOTES);
 //        adapter.addFragment(new NoteFragment(), "Picnotes");
         viewPager.setAdapter(adapter);
     }

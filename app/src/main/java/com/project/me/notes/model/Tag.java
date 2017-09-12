@@ -14,12 +14,12 @@ public class Tag extends RealmObject {
     @Required
     private String tagName;
 
-    private int colorValue;
+    private String colorValue;
 
     public Tag() {
     }
 
-    public Tag(String tagName, int colorValue) {
+    public Tag(String tagName, String colorValue) {
         this.tagName = tagName;
         this.colorValue = colorValue;
     }
@@ -40,11 +40,11 @@ public class Tag extends RealmObject {
         this.tagName = tagName;
     }
 
-    public int getColorValue() {
+    public String getColorValue() {
         return colorValue;
     }
 
-    public void setColorValue(int colorValue) {
+    public void setColorValue(String colorValue) {
         this.colorValue = colorValue;
     }
 }
