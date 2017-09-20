@@ -38,7 +38,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:padding="10dp"
-                android:src="@drawable/ic_text_size_black_24dp"></ImageView>
+                android:src="@drawable/ic_text_size_black_24dp" />
 
             <View
                 android:layout_width="1dp"
@@ -136,6 +136,7 @@
                 android:hint="@string/textnote"
                 android:inputType="textMultiLine"
                 android:padding="10dp"
+                android:textColor="@android:color/black"
                 android:textIsSelectable="true"
                 android:textSize="@dimen/medium_text_size" />
 
@@ -168,7 +169,9 @@
             <ImageView
                 android:id="@+id/attachment_image"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"/>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 

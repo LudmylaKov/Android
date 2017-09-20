@@ -26,10 +26,17 @@ public class Note extends RealmObject {
     private boolean isAudio;
     private boolean isVideo;
     private boolean isLink;
+    private boolean isPicture;
     private int fontSize;
     private int textColor;
     
     public Note() {
+        this.isAudio = false;
+        this.isVideo = false;
+        this.isLink = false;
+        this.isPicture = false;
+        this.fontSize = ConstantType.FONT_SIZE_MEDIUM;
+        this.media = new RealmList<Media>();
     }
 
     public Note(int id, Long timeStamp, String title, String text, Tag tag, RealmList<Media> media, Notification notification, 
@@ -168,6 +175,14 @@ public class Note extends RealmObject {
 
     public void setTextColor(int textColor) {
         this.textColor = textColor;
+    }
+
+    public boolean isPicture() {
+        return isPicture;
+    }
+
+    public void setPicture(boolean picture) {
+        isPicture = picture;
     }
 }
 

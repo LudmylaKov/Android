@@ -5,6 +5,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -22,6 +26,7 @@ import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -32,13 +37,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.me.notes.model.ConstantType;
+import com.project.me.notes.model.Media;
 import com.project.me.notes.model.Note;
 import com.project.me.notes.model.Tag;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import io.realm.Realm;
+import io.realm.RealmList;
+import io.realm.RealmResults;
 
 public class SingleNoteActivity extends AppCompatActivity {
     private static final int ACTIVITY_CHOOSE_FILE = 1;
@@ -53,19 +66,14 @@ public class SingleNoteActivity extends AppCompatActivity {
 
     private Note thisNote;
     Realm realm;
+    Integer id = -1;
+    Integer fontSize, textColor;
+    Tag tagNew;
+    ArrayList<Media> mediaNew;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        thisNote = new Note();
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            Integer id = extras.getInt("ID");
-            //TODO get note by id from realm
-        }
-        else{
-            thisNote.setFontSize(ConstantType.FONT_SIZE_MEDIUM);
-        }
-
 
         setContentView(R.layout.activity_single_note);
         Toolbar toolbarNote = (Toolbar) findViewById(R.id.toolbar_note);
@@ -74,8 +82,29 @@ public class SingleNoteActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         initialViews();
+        //Realm.init(this);
+        realm = Realm.getDefaultInstance();
+        //thisNote = new Note();
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            id = extras.getInt("ID");
+            thisNote = realm.where(Note.class).equalTo("id", id).findFirst();
+            //TODO get note by id from realm
+            initialFieldsById();
+        }
+        else{
+            thisNote = new Note();
+            thisNote.setFontSize(ConstantType.FONT_SIZE_MEDIUM);
+            fontSize = thisNote.getFontSize();
+            mediaNew = new ArrayList<Media>();
+            initialFieldsNew();
+        }
 
 
+        /*Drawable mDrawable = this.getResources().getDrawable(R.drawable.ic_tag_black_24dp);
+        mDrawable.setColorFilter(new
+                PorterDuffColorFilter(Color.parseColor(thisNote.getTag().getColorValue()), PorterDuff.Mode.MULTIPLY));
+*/
         ImageView textSize = (ImageView) findViewById(R.id.textSize);
         textSize.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,9 +112,92 @@ public class SingleNoteActivity extends AppCompatActivity {
                 showPopUpMenuForFontSize(v);
             }
         });
+        ImageView textColor = (ImageView) findViewById(R.id.textColor);
+        textColor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*LayoutInflater inflater = SingleNoteActivity.this.getLayoutInflater();
+                new AlertDialog.Builder(SingleNoteActivity.this)
+                        .setTitle("Choose text color")
+                        .setView(inflater.inflate(R.layout.dialog_color_picker, null))
+                        .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
-        //Realm.init(this);
-        realm = Realm.getDefaultInstance();
+                                //dialog.dismiss();
+
+                            }
+                        }).setNegativeButton("no", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        //dialog.dismiss();
+
+                    }
+                }).show();*/
+            }
+        });
+        /*textColor.setColorFilter(new
+                        PorterDuffColorFilter(Color.parseColor(ConstantType.TAG_COLOR1),
+                PorterDuff.Mode.MULTIPLY));*/
+
+
+
+    }
+
+
+
+    private void initialFieldsById() {
+        setTextSize(thisNote.getFontSize());
+
+        fontSize = thisNote.getFontSize();
+
+        String dateString = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                .format(new Date(thisNote.getTimeStamp()));
+        currentDate.setText(dateString);
+        titleOfNote.setText(thisNote.getTitle());
+        textOfNote.setText(thisNote.getText());
+
+
+        if(thisNote.getNotification()!=null&&thisNote.getNotification().isNotification()){
+            String dateNotificationString = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                    .format(new Date(thisNote.getNotification().getDateNotification()));
+            notification.setText(dateNotificationString);
+            notification.setVisibility(View.VISIBLE);
+        }
+
+        if(thisNote.getTag()!=null){
+            tagOfNote.setText(thisNote.getTag().getTagName());
+            //tagOfNote.setBackgroundColor(Color.parseColor(thisNote.getTag().getColorValue()));
+            tagOfNote.setVisibility(View.VISIBLE);
+            Drawable mDrawable = ContextCompat.getDrawable(this, R.drawable.ic_tag_blue_24dp).mutate();
+            mDrawable.setColorFilter(new PorterDuffColorFilter(Color.parseColor(thisNote.getTag().getColorValue()),
+                    PorterDuff.Mode.SRC_IN));
+            tagOfNote.setCompoundDrawablesWithIntrinsicBounds(mDrawable, null, null, null);
+        }
+
+        if(thisNote.isPicture()){
+            RealmList<Media> mediaThis = thisNote.getMedia();
+            for(int i = 0; i < mediaThis.size();++i){
+                if (mediaThis.get(i).getFileType() == ConstantType.TYPE_PICTURE) {
+
+                    attachmentImage.setImageURI(Uri.fromFile(new File(mediaThis.get(i).getFilePath())));
+                    Log.i("urimagge",Uri.parse(mediaThis.get(i).getFilePath()).toString());
+                }
+            }
+            //attachmentImage.setImageURI(Uri.parse("content://com.android.providers.downloads.documents/document/6"));
+
+        }
+
+    }
+    private void initialFieldsNew() {
+        Calendar currentTime = Calendar.getInstance();
+        long time3 = currentTime.getTimeInMillis();
+        currentDate.setText(DateFormat.format("HH:mm dd/MM/yyyy", currentTime).toString());
+
+        thisNote.setTimeStamp(time3);
+
+        setTextSize(thisNote.getFontSize());
     }
 
     private void initialViews() {
@@ -100,13 +212,7 @@ public class SingleNoteActivity extends AppCompatActivity {
         //long time = System.currentTimeMillis();
         //long time2 = currentTime.get(Calendar.ZONE_OFFSET)+currentTime.get(Calendar.DST_OFFSET);
 
-        Calendar currentTime = Calendar.getInstance();
-        long time3 = currentTime.getTimeInMillis();
-        currentDate.setText(DateFormat.format("HH:mm dd/MM/yyyy", currentTime).toString());
 
-        thisNote.setTimeStamp(time3);
-
-        setTextSize(thisNote.getFontSize());
     }
 
     private void setTextSize(int fontSize) {
@@ -122,7 +228,8 @@ public class SingleNoteActivity extends AppCompatActivity {
                         getResources().getDimension(R.dimen.small_notification_size));
                 tagOfNote.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                         getResources().getDimension(R.dimen.small_tag_size));
-                thisNote.setFontSize(ConstantType.FONT_SIZE_SMALL);
+                //thisNote.setFontSize(ConstantType.FONT_SIZE_SMALL);
+                fontSize = thisNote.getFontSize();
                 break;
             case ConstantType.FONT_SIZE_MEDIUM:
                 currentDate.setTextSize(TypedValue.COMPLEX_UNIT_PX,
@@ -135,7 +242,8 @@ public class SingleNoteActivity extends AppCompatActivity {
                         getResources().getDimension(R.dimen.medium_notification_size));
                 tagOfNote.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                         getResources().getDimension(R.dimen.medium_tag_size));
-                thisNote.setFontSize(ConstantType.FONT_SIZE_MEDIUM);
+                //thisNote.setFontSize(ConstantType.FONT_SIZE_MEDIUM);
+                fontSize = thisNote.getFontSize();
                 break;
             case ConstantType.FONT_SIZE_LARGE:
                 currentDate.setTextSize(TypedValue.COMPLEX_UNIT_PX,
@@ -148,12 +256,13 @@ public class SingleNoteActivity extends AppCompatActivity {
                         getResources().getDimension(R.dimen.large_notification_size));
                 tagOfNote.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                         getResources().getDimension(R.dimen.large_tag_size));
-                thisNote.setFontSize(ConstantType.FONT_SIZE_LARGE);
+                //thisNote.setFontSize(ConstantType.FONT_SIZE_LARGE);
+                fontSize = thisNote.getFontSize();
                 break;
         }
     }
 
-    //POPUP MENU
+    //POPUP MENU Font Size
     private void showPopUpMenuForFontSize(View v) {
         final PopupMenu popupMenu = new PopupMenu(this, v);
         popupMenu.inflate(R.menu.popupmenu_font_size);
@@ -201,7 +310,6 @@ public class SingleNoteActivity extends AppCompatActivity {
         });
         popupMenu.show();
     }
-
 
     //MENU
     private ShareActionProvider mShareActionProvider;
@@ -270,6 +378,18 @@ public class SingleNoteActivity extends AppCompatActivity {
 
             case R.id.action_delete_note:
                 // delete and return to main activity
+                if(id!=-1) {
+                    realm.executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+
+                            // remove a single object
+                            thisNote.deleteFromRealm();
+                        }
+                    });
+                }
+
+                finish();
                 return true;
             case R.id.action_share_note:
                 // open dialog to share the note
@@ -301,11 +421,19 @@ public class SingleNoteActivity extends AppCompatActivity {
         if (resultCode != RESULT_OK) return;
         String path = "";
 //        if (requestCode == ACTIVITY_CHOOSE_FILE) {
-        Uri uri = data.getData();
+        final Uri uri = data.getData();
 
         path = ImageFilePath.getPath(this, uri); // should the path be here in this string
         System.out.print("Path  = " + path);
+        Log.i("urimagge", path);
         attachmentImage.setImageURI(uri);
+
+        Media image = new Media();
+        image.setFileType(ConstantType.TYPE_PICTURE);
+        image.setFilePath(path);
+        thisNote.setPicture(true);
+        mediaNew.add(image);
+
 //        }
     }
 
@@ -323,6 +451,7 @@ public class SingleNoteActivity extends AppCompatActivity {
                 }).setNegativeButton("no", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                //TODO return to previous note content
                 dialog.dismiss();
                 SingleNoteActivity.super.onBackPressed();
             }
@@ -360,7 +489,7 @@ public class SingleNoteActivity extends AppCompatActivity {
 
                               note.setTimeStamp(thisNote.getTimeStamp());
 
-                              if(tagOfNote.getText()!=null){
+                              if(tagNew!=null){
                                   currentIdNum = realm.where(Tag.class).max("id");
 
                                   if (currentIdNum == null) {
@@ -370,14 +499,47 @@ public class SingleNoteActivity extends AppCompatActivity {
                                   }
                                   Tag tag = realm.createObject(Tag.class, nextId);
                                   //tag.setId(nextId);
-                                  tag.setTagName(tagOfNote.getText().toString());
-                                  tag.setColorValue(ConstantType.TAG_COLOR1);//TODO save bg tag color
+                                  tag.setTagName(tagNew.getTagName());
+                                  tag.setColorValue(tagNew.getColorValue());//TODO save bg tag color
                                  // realm.insertOrUpdate(tag);
                                   note.setTag(tag);
                               }
 
                               note.setTextColor(textOfNote.getCurrentTextColor());
-                              note.setFontSize(thisNote.getFontSize());
+                              note.setFontSize(fontSize);
+                              note.setPicture(thisNote.isPicture());
+
+                              //add media
+                              // increment index
+                              if(mediaNew.size()!=0)
+                                  for(int i = 0; i < mediaNew.size(); ++i){
+                                      currentIdNum = realm.where(Media.class).max("id");
+                                      if (currentIdNum == null) {
+                                          nextId = 1;
+                                      } else {
+                                          nextId = currentIdNum.intValue() + 1;
+                                      }
+
+                                      Media media = realm.createObject(Media.class, nextId);
+                                      media.setFileType(mediaNew.get(i).getFileType());
+                                      media.setFilePath(mediaNew.get(i).getFilePath());
+                                      note.getMedia().add(media);
+                                  }
+
+                              /*RealmList<Media> list = thisNote.getMedia();
+                              if (!list.isManaged()) { // if the 'list' is managed, all items in it is also managed
+                                  RealmList<Media> managedImageList = new RealmList<>();
+                                  for (Media item : list) {
+                                      if (item.isManaged()) {
+                                          managedImageList.add(item);
+                                      } else {
+                                          managedImageList.add(realm.copyToRealm(item));
+                                      }
+                                  }
+                                  list = managedImageList;
+                              }
+                              note.setMedia(list);*/
+                              //note.setMedia(thisNote.getMedia());
 
 
                               //realm.insertOrUpdate(note);

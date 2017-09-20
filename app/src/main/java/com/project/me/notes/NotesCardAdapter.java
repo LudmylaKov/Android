@@ -81,10 +81,14 @@ public class NotesCardAdapter extends RealmRecyclerViewAdapter<Note, NotesCardAd
         final Note note = getItem(position);
         holder.data = note;
         // ColorDrawable color = new ColorDrawable(note.getTag().getColorValue());
-        holder.tag.setText(note.getTag().getTagName());
-        Log.i("tags",note.getTag().getTagName());
-        holder.tag.setBackgroundColor(Color.parseColor(note.getTag().getColorValue()));
-        holder.tag.setTextColor(Color.WHITE);
+        if(note.getTag()!=null){
+            holder.tag.setText(note.getTag().getTagName());
+            Log.i("tags",note.getTag().getTagName());
+            holder.tag.setBackgroundColor(Color.parseColor(note.getTag().getColorValue()));
+            holder.tag.setTextColor(Color.WHITE);
+        }
+
+
         //holder.tag.setBackgroundResource(note.getTag().getColorValue());
 
         holder.title.setText(note.getTitle());

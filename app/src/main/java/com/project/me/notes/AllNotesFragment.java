@@ -75,7 +75,7 @@ public class AllNotesFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_notes, container, false);
         realm = Realm.getDefaultInstance();
         sml = (SwipeMenuLayout) v.findViewById(R.id.sml);
-        prepareNotes();
+        //prepareNotes();
         recyclerView = (RecyclerView) v.findViewById(R.id.smContentView);
 
         readBundle(getArguments());
@@ -142,18 +142,23 @@ public class AllNotesFragment extends Fragment {
 
         final Note n = new Note(1343805819061L, "new 1", "text1text", t, null, null, true, false, false);
         n.setId(1);
+        n.setFontSize(ConstantType.FONT_SIZE_MEDIUM);
         //noteList.add(n);
         final Note n2 = new Note(1343805819061L, "new 2", "text234234234text", t2, null, null, true, true, false);
         n2.setId(2);
+        n2.setFontSize(ConstantType.FONT_SIZE_MEDIUM);
         //noteList.add(n);
         final Note n3 = new Note(1343805819061L, "new 3", "texttqrgqrgqrg1text", t, null, notification, false, true, false);
         n3.setId(3);
+        n3.setFontSize(ConstantType.FONT_SIZE_MEDIUM);
         // noteList.add(n);
         final Note n4 = new Note(1343805819061L, "new 4", "textdqfgqgqehg1text", t2, null, null, false, false, false);
         n4.setId(4);
+        n4.setFontSize(ConstantType.FONT_SIZE_MEDIUM);
         // noteList.add(n);
         final Note n5 = new Note(1343805819061L, "new 5", "text1qhqehqerhhqtext", t, null, notification, false, true, false);
         n5.setId(5);
+        n5.setFontSize(ConstantType.FONT_SIZE_MEDIUM);
         //   noteList.add(n);
 
         realm.executeTransaction(new Realm.Transaction() {
