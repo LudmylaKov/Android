@@ -2,7 +2,23 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="colorTest">#4aff40</color>
+    <color name="colorAccent">#6495ed</color>
     <color name="colorIcons">#FFFFFFFF</color>
+
+    <!--Text Colors-->
+    <color name="colorBlack">#000000</color>
+    <color name="colorGray">#808080</color>
+    <color name="colorGreen">#008000</color>
+    <color name="colorBlue">#0000ff</color>
+    <color name="colorRed">#ff0000</color>
+    <color name="colorPink">#ff00ff</color>
+
+    <!--Tag Colors-->
+    <color name="colorTagDefault">#c0c0c0</color>
+    <color name="colorTagLightGreen">#4aff40</color>
+    <color name="colorTagYellow">#ffff00</color>
+    <color name="colorTagBlue">#483d8b</color>
+    <color name="colorTagRed">#e11010</color>
+    <color name="colorTagPink">#ff00ff</color>
+    <color name="colorTagOrange">#ff4500</color>
 </resources>

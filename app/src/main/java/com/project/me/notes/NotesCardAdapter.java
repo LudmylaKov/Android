@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.project.me.notes.model.ConstantType;
 import com.project.me.notes.model.Note;
 
 import java.text.DateFormat;
@@ -87,6 +88,9 @@ public class NotesCardAdapter extends RealmRecyclerViewAdapter<Note, NotesCardAd
             holder.tag.setBackgroundColor(Color.parseColor(note.getTag().getColorValue()));
             holder.tag.setTextColor(Color.WHITE);
         }
+        else{
+            holder.tag.setBackgroundColor(Color.parseColor(ConstantType.TAG_COLOR_DEFAULT));
+        }
 
 
         //holder.tag.setBackgroundResource(note.getTag().getColorValue());
@@ -123,8 +127,6 @@ public class NotesCardAdapter extends RealmRecyclerViewAdapter<Note, NotesCardAd
         holder.text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO open this note
-
                 Intent intent = new Intent(mContext, SingleNoteActivity.class);
                 intent.putExtra("ID", note.getId());
                 mContext.startActivity(intent);

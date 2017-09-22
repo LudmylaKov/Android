@@ -75,7 +75,7 @@ public class AllNotesFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_notes, container, false);
         realm = Realm.getDefaultInstance();
         sml = (SwipeMenuLayout) v.findViewById(R.id.sml);
-        //prepareNotes();
+        prepareNotes();
         recyclerView = (RecyclerView) v.findViewById(R.id.smContentView);
 
         readBundle(getArguments());
@@ -117,9 +117,9 @@ public class AllNotesFragment extends Fragment {
 
     private void prepareNotes(){
 
-        final Tag t = new Tag("tag1", ConstantType.TAG_COLOR1);
+        final Tag t = new Tag("tag1", ConstantType.TAG_COLOR_LIGHT_GREEN);
         t.setId(1);
-        final Tag t2 = new Tag("tag2", ConstantType.TAG_COLOR2);
+        final Tag t2 = new Tag("tag2", ConstantType.TAG_COLOR_PINK);
         t2.setId(2);
         realm.executeTransaction(new Realm.Transaction() {
             @Override

@@ -10,47 +10,42 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <ImageView
-            android:id="@+id/textColor"
+            android:id="@+id/color_picker_black"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:padding="10dp"
-            android:foregroundTint="@color/colorAccent"
-            android:foregroundTintMode="src_atop"
+            android:onClick="colorClicked"
             android:src="@drawable/ic_lens_black_24dp">
 
         </ImageView>
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimary" />
+
         <ImageView
-            android:id="@+id/textColor1"
+            android:id="@+id/color_picker_gray"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:padding="10dp"
+            android:onClick="colorClicked"
             android:src="@drawable/ic_lens_black_24dp">
 
         </ImageView>
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimary" />
+
         <ImageView
-            android:id="@+id/textColor2"
+            android:id="@+id/color_picker_green"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:padding="10dp"
+            android:onClick="colorClicked"
             android:src="@drawable/ic_lens_black_24dp">
 
         </ImageView>
@@ -62,45 +57,42 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <ImageView
-            android:id="@+id/textColor6"
+            android:id="@+id/color_picker_blue"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:padding="10dp"
+            android:onClick="colorClicked"
             android:src="@drawable/ic_lens_black_24dp">
 
         </ImageView>
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimary" />
+
         <ImageView
-            android:id="@+id/textColor4"
+            android:id="@+id/color_picker_red"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:padding="10dp"
+            android:onClick="colorClicked"
             android:src="@drawable/ic_lens_black_24dp">
 
         </ImageView>
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimary" />
+
         <ImageView
-            android:id="@+id/textColor5"
+            android:id="@+id/color_picker_pink"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:padding="10dp"
+            android:onClick="colorClicked"
             android:src="@drawable/ic_lens_black_24dp">
 
         </ImageView>

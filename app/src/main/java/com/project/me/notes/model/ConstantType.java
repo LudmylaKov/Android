@@ -18,12 +18,21 @@ public class ConstantType {
     public static final int FONT_SIZE_LARGE = 7;
 
     //text color
-    //TODO add color
-    public static final int TEXT_COLOR = android.support.v7.appcompat.R.color.primary_dark_material_dark;
+    public static final String TEXT_COLOR_BLACK = "#000000";
+    public static final String TEXT_COLOR_GRAY = "#808080";
+    public static final String TEXT_COLOR_GREEN = "#008000";
+    public static final String TEXT_COLOR_BLUE = "#0000ff";
+    public static final String TEXT_COLOR_RED = "#ff0000";
+    public static final String TEXT_COLOR_PINK = "#ff00ff";
 
     //tag color
-    public static final String TAG_COLOR1 = "#4aff40";
-    public static final String TAG_COLOR2 = "#FF4081";
+    public static final String TAG_COLOR_DEFAULT = "#c0c0c0";
+    public static final String TAG_COLOR_LIGHT_GREEN = "#4aff40";
+    public static final String TAG_COLOR_YELLOW = "#ffff00";
+    public static final String TAG_COLOR_BLUE = "#483d8b";
+    public static final String TAG_COLOR_RED = "#e11010";
+    public static final String TAG_COLOR_PINK = "#ff00ff";
+    public static final String TAG_COLOR_ORANGE = "#ff4500";
 
     //fragmebts
     public static final String All_NOTES = "All";

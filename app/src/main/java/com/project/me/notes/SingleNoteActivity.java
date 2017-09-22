@@ -1,6 +1,8 @@
 package com.project.me.notes;
 
 import android.Manifest;
+import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,6 +10,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -26,13 +29,17 @@ import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,7 +74,8 @@ public class SingleNoteActivity extends AppCompatActivity {
     private Note thisNote;
     Realm realm;
     Integer id = -1;
-    Integer fontSize, textColor;
+    Integer fontSize;
+    String textColor;
     Tag tagNew;
     ArrayList<Media> mediaNew;
 
@@ -96,6 +104,7 @@ public class SingleNoteActivity extends AppCompatActivity {
             thisNote = new Note();
             thisNote.setFontSize(ConstantType.FONT_SIZE_MEDIUM);
             fontSize = thisNote.getFontSize();
+            textColor = ConstantType.TEXT_COLOR_BLACK;
             mediaNew = new ArrayList<Media>();
             initialFieldsNew();
         }
@@ -116,25 +125,8 @@ public class SingleNoteActivity extends AppCompatActivity {
         textColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*LayoutInflater inflater = SingleNoteActivity.this.getLayoutInflater();
-                new AlertDialog.Builder(SingleNoteActivity.this)
-                        .setTitle("Choose text color")
-                        .setView(inflater.inflate(R.layout.dialog_color_picker, null))
-                        .setPositiveButton("yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                //dialog.dismiss();
-
-                            }
-                        }).setNegativeButton("no", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        //dialog.dismiss();
-
-                    }
-                }).show();*/
+                PopupWindow popupwindow_obj = popupDisplay();
+                popupwindow_obj.showAsDropDown(v, -55, 15);
             }
         });
         /*textColor.setColorFilter(new
@@ -144,13 +136,86 @@ public class SingleNoteActivity extends AppCompatActivity {
 
 
     }
+    PopupWindow popupWindow;
+
+    @TargetApi(21)
+    public PopupWindow popupDisplay()
+    {
+
+        popupWindow = new PopupWindow(this);
+
+        // inflate your layout or dynamically add view
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        View view = inflater.inflate(R.layout.dialog_color_picker, null);
+
+        //Button item = (Button) view.findViewById(R.id.button1);
+
+        popupWindow.setFocusable(true);
+        popupWindow.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
+        popupWindow.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+        popupWindow.setContentView(view);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        popupWindow.setElevation(15);
+
+        Drawable mDrawable1 = ContextCompat.getDrawable(this, R.drawable.ic_lens_black_24dp).mutate();
+        Drawable mDrawable2 = ContextCompat.getDrawable(this, R.drawable.ic_lens_black_24dp).mutate();
+        Drawable mDrawable3 = ContextCompat.getDrawable(this, R.drawable.ic_lens_black_24dp).mutate();
+        Drawable mDrawable4 = ContextCompat.getDrawable(this, R.drawable.ic_lens_black_24dp).mutate();
+        Drawable mDrawable5 = ContextCompat.getDrawable(this, R.drawable.ic_lens_black_24dp).mutate();
+        Drawable mDrawable6 = ContextCompat.getDrawable(this, R.drawable.ic_lens_black_24dp).mutate();
+
+        ImageView CPBlack = (ImageView) view.findViewById(R.id.color_picker_black);
+        mDrawable1.setColorFilter(new PorterDuffColorFilter(Color.parseColor(ConstantType.TEXT_COLOR_BLACK), PorterDuff.Mode.SRC_IN));
+        CPBlack.setImageDrawable(mDrawable1);
+        ImageView CPGray = (ImageView) view.findViewById(R.id.color_picker_gray);
+        mDrawable2.setColorFilter(new PorterDuffColorFilter(Color.parseColor(ConstantType.TEXT_COLOR_GRAY), PorterDuff.Mode.SRC_IN));
+        CPGray.setImageDrawable(mDrawable2);
+        ImageView CPGreen = (ImageView) view.findViewById(R.id.color_picker_green);
+        mDrawable3.setColorFilter(new PorterDuffColorFilter(Color.parseColor(ConstantType.TEXT_COLOR_GREEN), PorterDuff.Mode.SRC_IN));
+        CPGreen.setImageDrawable(mDrawable3);
+        ImageView CPBlue = (ImageView) view.findViewById(R.id.color_picker_blue);
+        mDrawable4.setColorFilter(new PorterDuffColorFilter(Color.parseColor(ConstantType.TEXT_COLOR_BLUE), PorterDuff.Mode.SRC_IN));
+        CPBlue.setImageDrawable(mDrawable4);
+        ImageView CPRed = (ImageView) view.findViewById(R.id.color_picker_red);
+        mDrawable5.setColorFilter(new PorterDuffColorFilter(Color.parseColor(ConstantType.TEXT_COLOR_RED), PorterDuff.Mode.SRC_IN));
+        CPRed.setImageDrawable(mDrawable5);
+        ImageView CPPink = (ImageView) view.findViewById(R.id.color_picker_pink);
+        mDrawable6.setColorFilter(new PorterDuffColorFilter(Color.parseColor(ConstantType.TEXT_COLOR_PINK), PorterDuff.Mode.SRC_IN));
+        CPPink.setImageDrawable(mDrawable6);
+
+        //mDrawable.setColorFilter(new PorterDuffColorFilter(Color.parseColor(thisNote.getTag().getColorValue()),
 
 
+       // textColor1.setBackgroundColor(Color.CYAN);
+        switch(textColor){
+            case ConstantType.TEXT_COLOR_BLACK:
+                CPBlack.setBackgroundColor(Color.parseColor(ConstantType.TAG_COLOR_DEFAULT));
+                break;
+            case ConstantType.TEXT_COLOR_GRAY:
+                CPGray.setBackgroundColor(Color.parseColor(ConstantType.TAG_COLOR_DEFAULT));
+                break;
+            case ConstantType.TEXT_COLOR_GREEN:
+                CPGreen.setBackgroundColor(Color.parseColor(ConstantType.TAG_COLOR_DEFAULT));
+                break;
+            case ConstantType.TEXT_COLOR_BLUE:
+                CPBlue.setBackgroundColor(Color.parseColor(ConstantType.TAG_COLOR_DEFAULT));
+                break;
+            case ConstantType.TEXT_COLOR_RED:
+                CPRed.setBackgroundColor(Color.parseColor(ConstantType.TAG_COLOR_DEFAULT));
+                break;
+            case ConstantType.TEXT_COLOR_PINK:
+                CPPink.setBackgroundColor(Color.parseColor(ConstantType.TAG_COLOR_DEFAULT));
+                break;
+        }
+        return popupWindow;
+    }
 
     private void initialFieldsById() {
         setTextSize(thisNote.getFontSize());
-
+        setTextColor(thisNote.getTextColor());
         fontSize = thisNote.getFontSize();
+        textColor = thisNote.getTextColor();
 
         String dateString = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                 .format(new Date(thisNote.getTimeStamp()));
@@ -198,6 +263,7 @@ public class SingleNoteActivity extends AppCompatActivity {
         thisNote.setTimeStamp(time3);
 
         setTextSize(thisNote.getFontSize());
+        setTextColor(textColor);
     }
 
     private void initialViews() {
@@ -505,8 +571,9 @@ public class SingleNoteActivity extends AppCompatActivity {
                                   note.setTag(tag);
                               }
 
-                              note.setTextColor(textOfNote.getCurrentTextColor());
+                              note.setTextColor(textColor);
                               note.setFontSize(fontSize);
+
                               note.setPicture(thisNote.isPicture());
 
                               //add media
@@ -578,5 +645,46 @@ public class SingleNoteActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         realm.close();
+    }
+
+    public void colorClicked(View view) {
+        switch(view.getId()){
+            case R.id.color_picker_black:
+                setTextColor(ConstantType.TEXT_COLOR_BLACK);
+                textColor = ConstantType.TEXT_COLOR_BLACK;
+                popupWindow.dismiss();
+                break;
+            case R.id.color_picker_gray:
+                setTextColor(ConstantType.TEXT_COLOR_GRAY);
+                textColor = ConstantType.TEXT_COLOR_GRAY;
+                popupWindow.dismiss();
+                break;
+            case R.id.color_picker_green:
+                setTextColor(ConstantType.TEXT_COLOR_GREEN);
+                textColor = ConstantType.TEXT_COLOR_GREEN;
+                popupWindow.dismiss();
+                break;
+            case R.id.color_picker_blue:
+                setTextColor(ConstantType.TEXT_COLOR_BLUE);
+                textColor = ConstantType.TEXT_COLOR_BLUE;
+                popupWindow.dismiss();
+                break;
+            case R.id.color_picker_red:
+                setTextColor(ConstantType.TEXT_COLOR_RED);
+                textColor = ConstantType.TEXT_COLOR_RED;
+                popupWindow.dismiss();
+                break;
+            case R.id.color_picker_pink:
+                setTextColor(ConstantType.TEXT_COLOR_PINK);
+                textColor = ConstantType.TEXT_COLOR_PINK;
+                popupWindow.dismiss();
+                break;
+        }
+
+    }
+
+    public void setTextColor(String textColor) {
+        titleOfNote.setTextColor(Color.parseColor(textColor));
+        textOfNote.setTextColor(Color.parseColor(textColor));
     }
 }
