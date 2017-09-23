@@ -68,6 +68,7 @@ public class Note extends RealmObject {
         this.isAudio = isAudio;
         this.isVideo = isVideo;
         this.isLink = isLink;
+        this.textColor = ConstantType.TEXT_COLOR_BLACK;
     }
     public Note(Long timeStamp, String title, String text, Tag tag, RealmList<Media> media, Notification notification,
                 boolean isAudio, boolean isVideo, boolean isLink) {
@@ -81,6 +82,7 @@ public class Note extends RealmObject {
         this.isAudio = isAudio;
         this.isVideo = isVideo;
         this.isLink = isLink;
+        this.textColor = ConstantType.TEXT_COLOR_BLACK;
     }
     public int getId() {
         return id;

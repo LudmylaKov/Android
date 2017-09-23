@@ -39,6 +39,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,6 +72,8 @@ public class SingleNoteActivity extends AppCompatActivity {
     private TextView tagOfNote;
     private ImageView attachmentImage;
 
+    ImageView textColorView;
+
     private Note thisNote;
     Realm realm;
     Integer id = -1;
@@ -93,11 +96,12 @@ public class SingleNoteActivity extends AppCompatActivity {
         //Realm.init(this);
         realm = Realm.getDefaultInstance();
         //thisNote = new Note();
+        tagNew = new Tag();
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             id = extras.getInt("ID");
             thisNote = realm.where(Note.class).equalTo("id", id).findFirst();
-            //TODO get note by id from realm
+
             initialFieldsById();
         }
         else{
@@ -121,14 +125,16 @@ public class SingleNoteActivity extends AppCompatActivity {
                 showPopUpMenuForFontSize(v);
             }
         });
-        ImageView textColor = (ImageView) findViewById(R.id.textColor);
-        textColor.setOnClickListener(new View.OnClickListener() {
+        textColorView = (ImageView) findViewById(R.id.textColor);
+        textColorView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PopupWindow popupwindow_obj = popupDisplay();
                 popupwindow_obj.showAsDropDown(v, -55, 15);
             }
         });
+        setColorOfTextColorView(textColor);
+
         /*textColor.setColorFilter(new
                         PorterDuffColorFilter(Color.parseColor(ConstantType.TAG_COLOR1),
                 PorterDuff.Mode.MULTIPLY));*/
@@ -232,13 +238,18 @@ public class SingleNoteActivity extends AppCompatActivity {
         }
 
         if(thisNote.getTag()!=null){
-            tagOfNote.setText(thisNote.getTag().getTagName());
+           /* tagOfNote.setText(thisNote.getTag().getTagName());
             //tagOfNote.setBackgroundColor(Color.parseColor(thisNote.getTag().getColorValue()));
             tagOfNote.setVisibility(View.VISIBLE);
             Drawable mDrawable = ContextCompat.getDrawable(this, R.drawable.ic_tag_blue_24dp).mutate();
             mDrawable.setColorFilter(new PorterDuffColorFilter(Color.parseColor(thisNote.getTag().getColorValue()),
                     PorterDuff.Mode.SRC_IN));
-            tagOfNote.setCompoundDrawablesWithIntrinsicBounds(mDrawable, null, null, null);
+            tagOfNote.setCompoundDrawablesWithIntrinsicBounds(mDrawable, null, null, null);*/
+
+            tagNew.setId(thisNote.getTag().getId());
+            tagNew.setTagName(thisNote.getTag().getTagName());
+            tagNew.setColorValue(thisNote.getTag().getColorValue());
+            addTagToView(tagNew);
         }
 
         if(thisNote.isPicture()){
@@ -422,6 +433,7 @@ public class SingleNoteActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_add_tag:
                 // open dialog to add tag and chose it color
+                chooseOrAddTagDialog();
                 return true;
 
             case R.id.action_add_file:
@@ -467,6 +479,77 @@ public class SingleNoteActivity extends AppCompatActivity {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void chooseOrAddTagDialog() {
+        final AlertDialog alert;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //alert = builder.create();
+        LayoutInflater inflater = this.getLayoutInflater();
+        View layout =  inflater.inflate(R.layout.dialog_choose_tag, null);
+        alert = builder.setView(layout)
+                .setPositiveButton(R.string.create_new_tag, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        // sign in the user ...
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // LoginDialogFragment.this.getDialog().cancel();
+                    }
+                }).show();
+        //LinearLayout linearLayout2 = (LinearLayout) findViewById(R.layout.dialog_choose_tag);
+        LinearLayout linearLayout = (LinearLayout) layout.findViewById(R.id.choose_tag);
+        //linearLayout.setOrientation(LinearLayout.VERTICAL);
+        RealmResults<Tag> tags = realm.where(Tag.class).findAll();
+        for(int i = 0; i < tags.size(); ++i){
+            TextView textView = new TextView(this);
+            textView.setText(tags.get(i).getTagName());
+            linearLayout.addView(textView, new LinearLayout.LayoutParams
+                    (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                    getResources().getDimension(R.dimen.medium_tag_size));
+            textView.setPadding(10, 10, 10, 10);
+            textView.setTextColor(ContextCompat.getColor(this, R.color.colorBlack));
+            Drawable mDrawable = ContextCompat.getDrawable(this, R.drawable.ic_tag_blue_24dp).mutate();
+            mDrawable.setColorFilter(new PorterDuffColorFilter(Color.parseColor(tags.get(i).getColorValue()),
+                    PorterDuff.Mode.SRC_IN));
+            textView.setCompoundDrawablesWithIntrinsicBounds(mDrawable, null, null, null);
+            textView.setCompoundDrawablePadding(10);
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TextView tw = (TextView) v;
+
+                    tagNew.setTagName(tw.getText().toString());
+                    Tag tag = realm.where(Tag.class).equalTo("tagName", tagNew.getTagName()).findFirst();
+                    tagNew.setId(tag.getId());
+                    tagNew.setColorValue(tag.getColorValue());
+                    addTagToView(tagNew);
+
+                    alert.dismiss();
+                }
+            });
+
+
+        }
+
+
+
+
+
+
+    }
+
+    private void addTagToView(Tag tagNew) {
+        tagOfNote.setText(tagNew.getTagName());
+        //tagOfNote.setBackgroundColor(Color.parseColor(thisNote.getTag().getColorValue()));
+        tagOfNote.setVisibility(View.VISIBLE);
+        Drawable mDrawable = ContextCompat.getDrawable(this, R.drawable.ic_tag_blue_24dp).mutate();
+        mDrawable.setColorFilter(new PorterDuffColorFilter(Color.parseColor(tagNew.getColorValue()),
+                PorterDuff.Mode.SRC_IN));
+        tagOfNote.setCompoundDrawablesWithIntrinsicBounds(mDrawable, null, null, null);
     }
 
     @Override
@@ -652,31 +735,37 @@ public class SingleNoteActivity extends AppCompatActivity {
             case R.id.color_picker_black:
                 setTextColor(ConstantType.TEXT_COLOR_BLACK);
                 textColor = ConstantType.TEXT_COLOR_BLACK;
+                setColorOfTextColorView(textColor);
                 popupWindow.dismiss();
                 break;
             case R.id.color_picker_gray:
                 setTextColor(ConstantType.TEXT_COLOR_GRAY);
                 textColor = ConstantType.TEXT_COLOR_GRAY;
+                setColorOfTextColorView(textColor);
                 popupWindow.dismiss();
                 break;
             case R.id.color_picker_green:
                 setTextColor(ConstantType.TEXT_COLOR_GREEN);
                 textColor = ConstantType.TEXT_COLOR_GREEN;
+                setColorOfTextColorView(textColor);
                 popupWindow.dismiss();
                 break;
             case R.id.color_picker_blue:
                 setTextColor(ConstantType.TEXT_COLOR_BLUE);
                 textColor = ConstantType.TEXT_COLOR_BLUE;
+                setColorOfTextColorView(textColor);
                 popupWindow.dismiss();
                 break;
             case R.id.color_picker_red:
                 setTextColor(ConstantType.TEXT_COLOR_RED);
                 textColor = ConstantType.TEXT_COLOR_RED;
+                setColorOfTextColorView(textColor);
                 popupWindow.dismiss();
                 break;
             case R.id.color_picker_pink:
                 setTextColor(ConstantType.TEXT_COLOR_PINK);
                 textColor = ConstantType.TEXT_COLOR_PINK;
+                setColorOfTextColorView(textColor);
                 popupWindow.dismiss();
                 break;
         }
@@ -686,5 +775,11 @@ public class SingleNoteActivity extends AppCompatActivity {
     public void setTextColor(String textColor) {
         titleOfNote.setTextColor(Color.parseColor(textColor));
         textOfNote.setTextColor(Color.parseColor(textColor));
+    }
+
+    public void setColorOfTextColorView(String colorOfTextColorView) {
+        Drawable mDrawable = ContextCompat.getDrawable(this, R.drawable.ic_lens_black_24dp).mutate();
+        mDrawable.setColorFilter(new PorterDuffColorFilter(Color.parseColor(colorOfTextColorView), PorterDuff.Mode.SRC_IN));
+        textColorView.setImageDrawable(mDrawable);
     }
 }
