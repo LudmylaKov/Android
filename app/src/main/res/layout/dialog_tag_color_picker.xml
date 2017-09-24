@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/choose_color"
+        android:textSize="@dimen/medium_tag_size"
+        android:padding="10dp"
+        android:layout_marginLeft="10dp"
+        android:textColor="@color/colorBlack"
+        />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        >
+        <ImageView
+            android:id="@+id/tag_color_picker_green"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:padding="10dp"
+            android:onClick="tagColorClicked"
+            android:src="@drawable/ic_lens_tag_36dp">
+
+        </ImageView>
+
+
+        <ImageView
+            android:id="@+id/tag_color_picker_yellow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:padding="10dp"
+            android:onClick="tagColorClicked"
+            android:src="@drawable/ic_lens_tag_36dp">
+
+        </ImageView>
+
+
+        <ImageView
+            android:id="@+id/tag_color_picker_blue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:padding="10dp"
+            android:onClick="tagColorClicked"
+            android:src="@drawable/ic_lens_tag_36dp">
+
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/tag_color_picker_red"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:padding="10dp"
+            android:onClick="tagColorClicked"
+            android:src="@drawable/ic_lens_tag_36dp">
+
+        </ImageView>
+
+
+        <ImageView
+            android:id="@+id/tag_color_picker_pink"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:padding="10dp"
+            android:onClick="tagColorClicked"
+            android:src="@drawable/ic_lens_tag_36dp">
+
+        </ImageView>
+
+
+        <ImageView
+            android:id="@+id/tag_color_picker_orange"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:padding="10dp"
+            android:onClick="tagColorClicked"
+            android:src="@drawable/ic_lens_tag_36dp">
+
+        </ImageView>
+    </LinearLayout>
+
+</LinearLayout>

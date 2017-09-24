@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/create_new_tag"
+        android:textSize="@dimen/medium_tag_size"
+        android:padding="10dp"
+        android:textColor="@color/colorBlack"
+        />
+
+    <EditText
+        android:id="@+id/tagNameInserted"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:hint="@string/tag_name"
+        android:inputType="text"
+        android:maxLength="20"
+        android:maxLines="1"
+        android:padding="10dp"
+        android:textColor="@android:color/black"
+        android:textIsSelectable="true"
+        android:textSize="@dimen/medium_text_size" />
+
+</LinearLayout>
