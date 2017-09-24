@@ -274,12 +274,18 @@ public class SingleNoteActivity extends AppCompatActivity {
     }
 
     private void addVideoToView(String filePath) {
-        Uri myVideoUri= Uri.fromFile(new File(filePath));
+        //Uri myVideoUri= Uri.fromFile(new File(filePath));
+        Uri myVideoUri= Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.ert);
         attachmentVideo.setVideoURI(myVideoUri);
+
         MediaController mediaController = new MediaController(this);
         attachmentVideo.setMediaController(mediaController);
         mediaController.setMediaPlayer(attachmentVideo);
-        Log.i("urimagge",Uri.parse(filePath).toString());
+        Log.i("urimagge", myVideoUri.toString());
+        //attachmentVideo.setKeepScreenOn(true);
+       // attachmentVideo.setVideoPath("file:///storage/emulated/0/Download/Pair Of Adorable Kittens.mp4");
+        attachmentVideo.start();
+        attachmentVideo.requestFocus();
     }
 
 
@@ -292,6 +298,8 @@ public class SingleNoteActivity extends AppCompatActivity {
 
         setTextSize(thisNote.getFontSize());
         setTextColor(textColor);
+
+       // addVideoToView("ert");
     }
 
     private void initialViews() {
@@ -469,8 +477,20 @@ public class SingleNoteActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 // The 'which' argument contains the index position
                                 // of the selected item
-                                addFile(type);
-
+                                switch(which){
+                                    case 0:
+                                        addFile(ConstantType.TYPE_PICTURE);
+                                        //Toast.makeText(SingleNoteActivity.this, "picture", Toast.LENGTH_SHORT).show();
+                                        break;
+                                    case 1:
+                                        addFile(ConstantType.TYPE_VIDEO);
+                                        //Toast.makeText(SingleNoteActivity.this, "video", Toast.LENGTH_SHORT).show();
+                                        break;
+                                    case 2:
+                                        addFile(ConstantType.TYPE_AUDIO);
+                                        //Toast.makeText(SingleNoteActivity.this, "audio", Toast.LENGTH_SHORT).show();
+                                        break;
+                                }
                             }
                         }).show();
 
@@ -503,18 +523,99 @@ public class SingleNoteActivity extends AppCompatActivity {
         }
 
     }
-
+    int mediaType;
     private void addFile(int type) {
 
         Intent chooseFile;
         Intent intent;
         chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
         chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
-        chooseFile.setType("image/*");
+        switch(type){
+            case ConstantType.TYPE_PICTURE:
+                chooseFile.setType("image/*");
+                break;
+            case ConstantType.TYPE_VIDEO:
+                chooseFile.setType("video/*");
+                break;
+            case ConstantType.TYPE_AUDIO:
+                chooseFile.setType("audio/*");
+                break;
+        }
+       // chooseFile.setType("image/*");
         intent = Intent.createChooser(chooseFile, "Choose a file");
+        mediaType = type;
+        Log.i("urimagge", String.valueOf(mediaType));
         startActivityForResult(intent, ACTIVITY_CHOOSE_FILE);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            /*Intent chooseFile;
+            Intent intent;
+            chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+            chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
+            chooseFile.setType("image*//*");
+            intent = Intent.createChooser(chooseFile, "Choose a file");
+            startActivityForResult(intent, ACTIVITY_CHOOSE_FILE);*/
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.choose_type)
+                    .setItems(R.array.choose_file, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // The 'which' argument contains the index position
+                            // of the selected item
+                            switch(which){
+                                case 0:
+                                    addFile(ConstantType.TYPE_PICTURE);
+                                    //Toast.makeText(SingleNoteActivity.this, "picture", Toast.LENGTH_SHORT).show();
+                                    break;
+                                case 1:
+                                    addFile(ConstantType.TYPE_VIDEO);
+                                    //Toast.makeText(SingleNoteActivity.this, "video", Toast.LENGTH_SHORT).show();
+                                    break;
+                                case 2:
+                                    addFile(ConstantType.TYPE_AUDIO);
+                                    //Toast.makeText(SingleNoteActivity.this, "audio", Toast.LENGTH_SHORT).show();
+                                    break;
+                            }
+                        }
+                    }).show();
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != RESULT_OK) return;
+        String path = "";
+//        if (requestCode == ACTIVITY_CHOOSE_FILE) {
+        final Uri uri = data.getData();
+        switch(mediaType){
+            case ConstantType.TYPE_PICTURE:
+                path = ImageFilePath.getPath(this, uri); // should the path be here in this string
+                attachmentImage.setImageURI(uri);
+
+                Media image = new Media();
+                image.setFileType(ConstantType.TYPE_PICTURE);
+                image.setFilePath(path);
+                thisNote.setPicture(true);
+                mediaNew.add(image);
+                break;
+            case ConstantType.TYPE_VIDEO:
+                path = ImageFilePath.getPath(this, uri); // should the path be here in this string
+                addVideoToView(path);
+                break;
+            case ConstantType.TYPE_AUDIO:
+                path = uri.getPath(); // should the path be here in this string
+                break;
+        }
+        Log.i("urimagge", String.valueOf(mediaType));
+        //path = ImageFilePath.getPath(this, uri); // should the path be here in this string
+       // System.out.print("Path  = " + path);
+        Log.i("urimagge", path);
+
+
+//        }
+    }
     private void chooseOrAddTagDialog() {
         final AlertDialog alert;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -714,39 +815,7 @@ public class SingleNoteActivity extends AppCompatActivity {
         tagOfNote.setCompoundDrawablesWithIntrinsicBounds(mDrawable, null, null, null);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            Intent chooseFile;
-            Intent intent;
-            chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
-            chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
-            chooseFile.setType("image/*");
-            intent = Intent.createChooser(chooseFile, "Choose a file");
-            startActivityForResult(intent, ACTIVITY_CHOOSE_FILE);
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != RESULT_OK) return;
-        String path = "";
-//        if (requestCode == ACTIVITY_CHOOSE_FILE) {
-        final Uri uri = data.getData();
-
-        path = ImageFilePath.getPath(this, uri); // should the path be here in this string
-        System.out.print("Path  = " + path);
-        Log.i("urimagge", path);
-        attachmentImage.setImageURI(uri);
-
-        Media image = new Media();
-        image.setFileType(ConstantType.TYPE_PICTURE);
-        image.setFilePath(path);
-        thisNote.setPicture(true);
-        mediaNew.add(image);
-
-//        }
-    }
 
     @Override
     public void onBackPressed() {
