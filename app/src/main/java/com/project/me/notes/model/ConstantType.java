@@ -38,4 +38,12 @@ public class ConstantType {
     public static final String All_NOTES = "All";
     public static final String TEXT_NOTES = "Textnotes";
     public static final String MEDIA_NOTES = "Medianotes";
+
+    public static final String All_NOTES_DESC = "All des";
+    public static final String TEXT_NOTES_DESC = "Textnotes des";
+    public static final String MEDIA_NOTES_DESC = "Medianotes des";
+
+    public static final String All_NOTES_ABC = "All abc";
+    public static final String TEXT_NOTES_ABC = "Textnotes abc";
+    public static final String MEDIA_NOTES_ABC = "Medianotes abc";
 }

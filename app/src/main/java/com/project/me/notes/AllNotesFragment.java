@@ -30,6 +30,7 @@ import java.util.List;
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,7 +57,7 @@ public class AllNotesFragment extends Fragment {
     public static AllNotesFragment newInstance(String title) {
         Bundle bundle = new Bundle();
         bundle.putString("title", title);
-
+        Log.i("allfragment", title);
         AllNotesFragment fragment = new AllNotesFragment();
         fragment.setArguments(bundle);
 
@@ -66,6 +67,7 @@ public class AllNotesFragment extends Fragment {
     private void readBundle(Bundle bundle) {
         if (bundle != null) {
             title = bundle.getString("title");
+            Log.i("allfragment", title);
         }
     }
 
@@ -79,9 +81,51 @@ public class AllNotesFragment extends Fragment {
         recyclerView = (RecyclerView) v.findViewById(R.id.smContentView);
 
         readBundle(getArguments());
+
         switch (title){
+            case ConstantType.All_NOTES_DESC:
+                notesCardAdapter = new NotesCardAdapter(realm.where(Note.class).findAll().sort("timeStamp", Sort.DESCENDING));
+                Log.i("allfragment", ConstantType.All_NOTES_DESC);
+                break;
+            case ConstantType.TEXT_NOTES_DESC:
+                notesCardAdapter = new NotesCardAdapter(realm.where(Note.class).not()
+                        .beginGroup()
+                        .equalTo("isVideo", true)
+                        .or().equalTo("isAudio", true)
+                        .endGroup()
+                        .findAll()
+                        .sort("timeStamp", Sort.DESCENDING))
+                ;
+                Log.i("allfragment", ConstantType.TEXT_NOTES_DESC);
+                break;
+            case ConstantType.MEDIA_NOTES_DESC:
+                notesCardAdapter = new NotesCardAdapter(realm.where(Note.class).equalTo("isVideo", true)
+                        .or().equalTo("isAudio", true).findAll().sort("timeStamp", Sort.DESCENDING));
+                Log.i("allfragment", ConstantType.MEDIA_NOTES_DESC);
+                break;
+            case ConstantType.All_NOTES_ABC:
+                notesCardAdapter = new NotesCardAdapter(realm.where(Note.class).findAll().sort("title"));
+                Log.i("allfragment", ConstantType.All_NOTES_ABC);
+                break;
+            case ConstantType.TEXT_NOTES_ABC:
+                notesCardAdapter = new NotesCardAdapter(realm.where(Note.class).not()
+                        .beginGroup()
+                        .equalTo("isVideo", true)
+                        .or().equalTo("isAudio", true)
+                        .endGroup()
+                        .findAll()
+                        .sort("title"))
+                ;
+                Log.i("allfragment", ConstantType.TEXT_NOTES_ABC);
+                break;
+            case ConstantType.MEDIA_NOTES_ABC:
+                notesCardAdapter = new NotesCardAdapter(realm.where(Note.class).equalTo("isVideo", true)
+                        .or().equalTo("isAudio", true).findAll().sort("title"));
+                Log.i("allfragment", ConstantType.MEDIA_NOTES_ABC);
+                break;
             case ConstantType.All_NOTES:
                 notesCardAdapter = new NotesCardAdapter(realm.where(Note.class).findAll().sort("timeStamp"));
+                Log.i("allfragment", ConstantType.All_NOTES);
                 break;
             case ConstantType.TEXT_NOTES:
                 notesCardAdapter = new NotesCardAdapter(realm.where(Note.class).not()
@@ -89,11 +133,20 @@ public class AllNotesFragment extends Fragment {
                         .equalTo("isVideo", true)
                         .or().equalTo("isAudio", true)
                         .endGroup()
-                        .findAll());
+                        .findAll()
+                        .sort("timeStamp"))
+                ;
+                Log.i("allfragment", ConstantType.TEXT_NOTES);
                 break;
             case ConstantType.MEDIA_NOTES:
                 notesCardAdapter = new NotesCardAdapter(realm.where(Note.class).equalTo("isVideo", true)
-                        .or().equalTo("isAudio", true).findAll());
+                        .or().equalTo("isAudio", true).findAll().sort("timeStamp"));
+                Log.i("allfragment", ConstantType.MEDIA_NOTES);
+                break;
+            default:
+                notesCardAdapter = new NotesCardAdapter(realm.where(Note.class).equalTo("tag.tagName", title)
+                        .findAll());
+                Log.i("allfragment", title);
                 break;
         }
 

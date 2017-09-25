@@ -44,7 +44,7 @@
     <string name="delete_all">Delete All</string>
     <string name="sort_a_z">Sort A-Z</string>
     <string name="sort_by_date">Sort By Date</string>
-    <string name="tags">Tags</string>
+    <string name="tags">Sort By Tag</string>
     <string name="about">About</string>
 
     <!--activity main-->

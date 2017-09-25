@@ -12,9 +12,9 @@ public class Tag extends RealmObject {
     @PrimaryKey
     private int id;
     @Required
-    private String tagName;
+    public String tagName;
 
-    private String colorValue;
+    public String colorValue;
 
     public Tag() {
     }
