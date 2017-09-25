@@ -276,11 +276,18 @@ public class SingleNoteActivity extends AppCompatActivity {
     private void addVideoToView(String filePath) {
         //Uri myVideoUri= Uri.fromFile(new File(filePath));
         Uri myVideoUri= Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.ert);
-        attachmentVideo.setVideoURI(myVideoUri);
+        try {
+
+            attachmentVideo.setVideoURI(myVideoUri);
 
         MediaController mediaController = new MediaController(this);
         attachmentVideo.setMediaController(mediaController);
         mediaController.setMediaPlayer(attachmentVideo);
+        } catch (Exception e) {
+            Log.e("Error", e.getMessage());
+            e.printStackTrace();
+        }
+
         Log.i("urimagge", myVideoUri.toString());
         //attachmentVideo.setKeepScreenOn(true);
        // attachmentVideo.setVideoPath("file:///storage/emulated/0/Download/Pair Of Adorable Kittens.mp4");
@@ -299,7 +306,7 @@ public class SingleNoteActivity extends AppCompatActivity {
         setTextSize(thisNote.getFontSize());
         setTextColor(textColor);
 
-       // addVideoToView("ert");
+        addVideoToView("ert");
     }
 
     private void initialViews() {

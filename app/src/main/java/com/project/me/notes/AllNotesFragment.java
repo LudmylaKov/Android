@@ -81,8 +81,7 @@ public class AllNotesFragment extends Fragment {
         readBundle(getArguments());
         switch (title){
             case ConstantType.All_NOTES:
-                notesCardAdapter = new NotesCardAdapter(realm.where(Note.class).findAll());
-                //TODO write realmresults
+                notesCardAdapter = new NotesCardAdapter(realm.where(Note.class).findAll().sort("timeStamp"));
                 break;
             case ConstantType.TEXT_NOTES:
                 notesCardAdapter = new NotesCardAdapter(realm.where(Note.class).not()

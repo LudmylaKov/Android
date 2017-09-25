@@ -38,6 +38,15 @@
     <string name="video">Video</string>
     <string name="audio">Audio</string>
 
+    <!--left menu-->
+    <string name="all_notes">All Notes</string>
+    <string name="_0">0</string>
+    <string name="delete_all">Delete All</string>
+    <string name="sort_a_z">Sort A-Z</string>
+    <string name="sort_by_date">Sort By Date</string>
+    <string name="tags">Tags</string>
+    <string name="about">About</string>
+
     <!--activity main-->
 
 
