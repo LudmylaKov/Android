@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 
 import com.project.me.notes.model.ConstantType;
 import com.project.me.notes.model.Note;
-import com.project.me.notes.model.Notification;
 import com.project.me.notes.model.Tag;
 import com.tubb.smrv.SwipeMenuLayout;
 import com.tubb.smrv.listener.SimpleSwipeSwitchListener;
@@ -63,10 +62,15 @@ public class AllNotesFragment extends Fragment {
 
         return fragment;
     }
-
+String search;
     private void readBundle(Bundle bundle) {
         if (bundle != null) {
+
             title = bundle.getString("title");
+            if(title.contains("search")){
+                search = title.substring(6);
+                title = "search";
+            }
             Log.i("allfragment", title);
         }
     }
@@ -91,7 +95,7 @@ public class AllNotesFragment extends Fragment {
                 notesCardAdapter = new NotesCardAdapter(realm.where(Note.class).not()
                         .beginGroup()
                         .equalTo("isVideo", true)
-                        .or().equalTo("isAudio", true)
+                        .or().equalTo("isPicture", true)
                         .endGroup()
                         .findAll()
                         .sort("timeStamp", Sort.DESCENDING))
@@ -100,7 +104,7 @@ public class AllNotesFragment extends Fragment {
                 break;
             case ConstantType.MEDIA_NOTES_DESC:
                 notesCardAdapter = new NotesCardAdapter(realm.where(Note.class).equalTo("isVideo", true)
-                        .or().equalTo("isAudio", true).findAll().sort("timeStamp", Sort.DESCENDING));
+                        .or().equalTo("isPicture", true).findAll().sort("timeStamp", Sort.DESCENDING));
                 Log.i("allfragment", ConstantType.MEDIA_NOTES_DESC);
                 break;
             case ConstantType.All_NOTES_ABC:
@@ -111,7 +115,7 @@ public class AllNotesFragment extends Fragment {
                 notesCardAdapter = new NotesCardAdapter(realm.where(Note.class).not()
                         .beginGroup()
                         .equalTo("isVideo", true)
-                        .or().equalTo("isAudio", true)
+                        .or().equalTo("isPicture", true)
                         .endGroup()
                         .findAll()
                         .sort("title"))
@@ -120,7 +124,7 @@ public class AllNotesFragment extends Fragment {
                 break;
             case ConstantType.MEDIA_NOTES_ABC:
                 notesCardAdapter = new NotesCardAdapter(realm.where(Note.class).equalTo("isVideo", true)
-                        .or().equalTo("isAudio", true).findAll().sort("title"));
+                        .or().equalTo("isPicture", true).findAll().sort("title"));
                 Log.i("allfragment", ConstantType.MEDIA_NOTES_ABC);
                 break;
             case ConstantType.All_NOTES:
@@ -131,7 +135,7 @@ public class AllNotesFragment extends Fragment {
                 notesCardAdapter = new NotesCardAdapter(realm.where(Note.class).not()
                         .beginGroup()
                         .equalTo("isVideo", true)
-                        .or().equalTo("isAudio", true)
+                        .or().equalTo("isPicture", true)
                         .endGroup()
                         .findAll()
                         .sort("timeStamp"))
@@ -140,8 +144,13 @@ public class AllNotesFragment extends Fragment {
                 break;
             case ConstantType.MEDIA_NOTES:
                 notesCardAdapter = new NotesCardAdapter(realm.where(Note.class).equalTo("isVideo", true)
-                        .or().equalTo("isAudio", true).findAll().sort("timeStamp"));
+                        .or().equalTo("isPicture", true).findAll().sort("timeStamp"));
                 Log.i("allfragment", ConstantType.MEDIA_NOTES);
+                break;
+            case "search":
+                notesCardAdapter = new NotesCardAdapter(realm.where(Note.class).contains("text", search)
+                        .findAll());
+                Log.i("allfragment", title);
                 break;
             default:
                 notesCardAdapter = new NotesCardAdapter(realm.where(Note.class).equalTo("tag.tagName", title)
@@ -169,9 +178,9 @@ public class AllNotesFragment extends Fragment {
 
     private void prepareNotes(){
 
-        final Tag t = new Tag("tag1", ConstantType.TAG_COLOR_LIGHT_GREEN);
+        final Tag t = new Tag("tag 1", ConstantType.TAG_COLOR_LIGHT_GREEN);
         t.setId(1);
-        final Tag t2 = new Tag("tag2", ConstantType.TAG_COLOR_PINK);
+        final Tag t2 = new Tag("tag 2", ConstantType.TAG_COLOR_PINK);
         t2.setId(2);
         realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -183,32 +192,23 @@ public class AllNotesFragment extends Fragment {
 
         Log.i("allnotesfrag", realm.where(Tag.class).equalTo("id", 1).findFirst().getTagName());
 
-        final Notification notification = new Notification(null, true);
-        notification.setId(1);
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                realm.insertOrUpdate(notification);
-            }
-        });
-
-        final Note n = new Note(1343805819061L, "new 1", "text1text", t, null, null, true, false, false);
+        final Note n = new Note(1343805819661L, "new 1", "text text", t, null, true, false);
         n.setId(1);
         n.setFontSize(ConstantType.FONT_SIZE_MEDIUM);
         //noteList.add(n);
-        final Note n2 = new Note(1343805819061L, "new 2", "text234234234text", t2, null, null, true, true, false);
+        final Note n2 = new Note(1343805819061L, "new 2", "text 234234234 text", t2, null, true, true);
         n2.setId(2);
         n2.setFontSize(ConstantType.FONT_SIZE_MEDIUM);
         //noteList.add(n);
-        final Note n3 = new Note(1343805819061L, "new 3", "texttqrgqrgqrg1text", t, null, notification, false, true, false);
+        final Note n3 = new Note(1343805819061L, "new 3", "text text text", t, null, false, false);
         n3.setId(3);
         n3.setFontSize(ConstantType.FONT_SIZE_MEDIUM);
         // noteList.add(n);
-        final Note n4 = new Note(1343805819061L, "new 4", "textdqfgqgqehg1text", t2, null, null, false, false, false);
+        final Note n4 = new Note(1343805819061L, "new 4", "text text text text text", t2, null, false, false);
         n4.setId(4);
         n4.setFontSize(ConstantType.FONT_SIZE_MEDIUM);
         // noteList.add(n);
-        final Note n5 = new Note(1343805819061L, "new 5", "text1qhqehqerhhqtext", t, null, notification, false, true, false);
+        final Note n5 = new Note(1343805819061L, "new 5", "text text text text text", t, null, false, true);
         n5.setId(5);
         n5.setFontSize(ConstantType.FONT_SIZE_MEDIUM);
         //   noteList.add(n);

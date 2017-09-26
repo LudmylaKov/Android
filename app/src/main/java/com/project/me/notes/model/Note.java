@@ -22,67 +22,30 @@ public class Note extends RealmObject {
     private String text;
     private Tag tag;
     private RealmList<Media> media;
-    private Notification notification;
-    private boolean isAudio;
     private boolean isVideo;
-    private boolean isLink;
     private boolean isPicture;
     private int fontSize;
     private String textColor;
     
     public Note() {
-        this.isAudio = false;
         this.isVideo = false;
-        this.isLink = false;
         this.isPicture = false;
         this.fontSize = ConstantType.FONT_SIZE_MEDIUM;
         this.media = new RealmList<Media>();
         this.textColor = ConstantType.TEXT_COLOR_BLACK;
     }
 
-    public Note(int id, Long timeStamp, String title, String text, Tag tag, RealmList<Media> media, Notification notification, 
-                boolean isAudio, boolean isVideo, boolean isLink, int fontSize, String textColor) {
-        this.id = id;
-        this.timeStamp = timeStamp;
-        this.title = title;
-        this.text = text;
-        this.tag = tag;
-        this.media = media;
-        this.notification = notification;
-        this.isAudio = isAudio;
-        this.isVideo = isVideo;
-        this.isLink = isLink;
-        this.fontSize = fontSize;
-        this.textColor = textColor;
-    }
-
-    public Note(int id, Long timeStamp, String title, String text, Tag tag, RealmList<Media> media, Notification notification,
-                boolean isAudio, boolean isVideo, boolean isLink) {
-        this.id = id;
-        this.timeStamp = timeStamp;
-        this.title = title;
-        this.text = text;
-        this.tag = tag;
-        this.media = media;
-        this.notification = notification;
-        this.isAudio = isAudio;
-        this.isVideo = isVideo;
-        this.isLink = isLink;
-        this.textColor = ConstantType.TEXT_COLOR_BLACK;
-    }
-    public Note(Long timeStamp, String title, String text, Tag tag, RealmList<Media> media, Notification notification,
-                boolean isAudio, boolean isVideo, boolean isLink) {
+    public Note(Long timeStamp, String title, String text, Tag tag, RealmList<Media> media,
+                boolean isVideo, boolean isPicture) {
 
         this.timeStamp = timeStamp;
         this.title = title;
         this.text = text;
         this.tag = tag;
         this.media = media;
-        this.notification = notification;
-        this.isAudio = isAudio;
         this.isVideo = isVideo;
-        this.isLink = isLink;
         this.textColor = ConstantType.TEXT_COLOR_BLACK;
+        this.isPicture = isPicture;
     }
     public int getId() {
         return id;
@@ -120,16 +83,8 @@ public class Note extends RealmObject {
         return media;
     }
 
-    public void setMedia(RealmList<Media> media) {
-        this.media = media;
-    }
-
-    public Notification getNotification() {
-        return notification;
-    }
-
-    public void setNotification(Notification notification) {
-        this.notification = notification;
+    public void setMedia() {
+        this.media = new RealmList<Media>();
     }
 
     public Tag getTag() {
@@ -140,28 +95,12 @@ public class Note extends RealmObject {
         this.tag = tag;
     }
 
-    public boolean isAudio() {
-        return isAudio;
-    }
-
-    public void setAudio(boolean audio) {
-        isAudio = audio;
-    }
-
     public boolean isVideo() {
         return isVideo;
     }
 
     public void setVideo(boolean video) {
         isVideo = video;
-    }
-
-    public boolean isLink() {
-        return isLink;
-    }
-
-    public void setLink(boolean link) {
-        isLink = link;
     }
 
     public int getFontSize() {

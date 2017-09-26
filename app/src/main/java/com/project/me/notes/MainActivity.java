@@ -157,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     //menu start
+    String search;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -167,7 +168,9 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                String search = (String) searchView.getQuery();
+                search = (String) searchView.getQuery();
+                adapter.replaceFragment(AllNotesFragment.newInstance("search"+search), search, 0);
+
                 //TODO search in database and show list of notes
                 //https://www.google.com.ua/search?q=android+search+in+toolbar&oq=android+search+&aqs=chrome.4.69i57j69i60l3j0l2.10207j0j4&sourceid=chrome&ie=UTF-8
                 return false;

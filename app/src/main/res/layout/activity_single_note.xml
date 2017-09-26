@@ -62,30 +62,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/colorPrimary" />
 
-            <ImageView
-                android:id="@+id/checklist"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:padding="10dp"
-                android:src="@drawable/ic_done_black_24dp" />
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/colorPrimary" />
-
-            <ImageView
-                android:id="@+id/addNotification"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:padding="10dp"
-                android:src="@drawable/ic_add_alert_black_24dp" />
 
         </LinearLayout>
     </android.support.design.widget.AppBarLayout>
@@ -164,6 +141,7 @@
                 android:padding="10dp"
                 android:hint="@string/tag_note"
                 android:textSize="@dimen/medium_tag_size"
+                android:onClick="tagDeletion"
                 android:visibility="gone" />
 
             <ImageView

@@ -82,7 +82,7 @@ public class SingleNoteActivity extends AppCompatActivity {
     String textColor;
     Tag tagNew;
     ArrayList<Media> mediaNew;
-
+    Boolean createdNote;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,11 +98,12 @@ public class SingleNoteActivity extends AppCompatActivity {
         realm = Realm.getDefaultInstance();
         //thisNote = new Note();
         tagNew = new Tag();
+        mediaNew = new ArrayList<Media>();
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             id = extras.getInt("ID");
             thisNote = realm.where(Note.class).equalTo("id", id).findFirst();
-
+            createdNote = false;
             initialFieldsById();
         }
         else{
@@ -110,7 +111,8 @@ public class SingleNoteActivity extends AppCompatActivity {
             thisNote.setFontSize(ConstantType.FONT_SIZE_MEDIUM);
             fontSize = thisNote.getFontSize();
             textColor = ConstantType.TEXT_COLOR_BLACK;
-            mediaNew = new ArrayList<Media>();
+
+            createdNote = true;
             initialFieldsNew();
         }
 
@@ -233,13 +235,6 @@ public class SingleNoteActivity extends AppCompatActivity {
         textOfNote.setText(thisNote.getText());
 
 
-        if(thisNote.getNotification()!=null&&thisNote.getNotification().isNotification()){
-            String dateNotificationString = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                    .format(new Date(thisNote.getNotification().getDateNotification()));
-            notification.setText(dateNotificationString);
-            notification.setVisibility(View.VISIBLE);
-        }
-
         if(thisNote.getTag()!=null){
            /* tagOfNote.setText(thisNote.getTag().getTagName());
             //tagOfNote.setBackgroundColor(Color.parseColor(thisNote.getTag().getColorValue()));
@@ -255,9 +250,14 @@ public class SingleNoteActivity extends AppCompatActivity {
             addTagToView(tagNew);
         }
 
-        if(thisNote.isPicture()||thisNote.isVideo()||thisNote.isAudio()){
+        if(thisNote.isPicture()||thisNote.isVideo()){
             RealmList<Media> mediaThis = thisNote.getMedia();
             for(int i = 0; i < mediaThis.size();++i){
+                Media media = new Media();
+                media.setId(mediaThis.get(i).getId());
+                media.setFilePath(mediaThis.get(i).getFilePath());
+                media.setFileType(mediaThis.get(i).getFileType());
+                mediaNew.add(media);
                 if (mediaThis.get(i).getFileType() == ConstantType.TYPE_PICTURE) {
 
                     attachmentImage.setImageURI(Uri.fromFile(new File(mediaThis.get(i).getFilePath())));
@@ -580,10 +580,7 @@ public class SingleNoteActivity extends AppCompatActivity {
                                     addFile(ConstantType.TYPE_VIDEO);
                                     //Toast.makeText(SingleNoteActivity.this, "video", Toast.LENGTH_SHORT).show();
                                     break;
-                                case 2:
-                                    addFile(ConstantType.TYPE_AUDIO);
-                                    //Toast.makeText(SingleNoteActivity.this, "audio", Toast.LENGTH_SHORT).show();
-                                    break;
+
                             }
                         }
                     }).show();
@@ -663,7 +660,7 @@ public class SingleNoteActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     TextView tw = (TextView) v;
-
+                    tagNew = new Tag();
                     tagNew.setTagName(tw.getText().toString());
                     Tag tag = realm.where(Tag.class).equalTo("tagName", tagNew.getTagName()).findFirst();
                     tagNew.setId(tag.getId());
@@ -806,6 +803,8 @@ public class SingleNoteActivity extends AppCompatActivity {
     }
 
     private void createNewTag() {
+        tagNew = new Tag();
+        tagNew.setId(-1);
         tagNew.setTagName(tagCreated.getTagName());
         tagNew.setColorValue(tagCreated.getColorValue());
         addTagToView(tagNew);
@@ -855,65 +854,124 @@ public class SingleNoteActivity extends AppCompatActivity {
             realm.executeTransactionAsync(new Realm.Transaction() {
                           @Override
                           public void execute(Realm realm) {
-                              // increment index
-                              Number currentIdNum = realm.where(Note.class).max("id");
-                              int nextId;
-                              if (currentIdNum == null) {
-                                  nextId = 1;
-                              } else {
-                                  nextId = currentIdNum.intValue() + 1;
-                              }
-
-                              Note note = realm.createObject(Note.class, nextId);
-                             // note.setId(nextId);
-                              note.setText(textOfNote.getText().toString());
-                              if(TextUtils.isEmpty(titleOfNote.getText().toString().trim())){
-                                  note.setTitle(textOfNote.getText().toString().substring(0, 19));
-                              }
-                              else{
-                                  note.setTitle(titleOfNote.getText().toString());
-                              }
-
-                              note.setTimeStamp(thisNote.getTimeStamp());
-
-                              if(tagNew!=null){
-                                  currentIdNum = realm.where(Tag.class).max("id");
-
+                              if (createdNote) {
+                                  // increment index
+                                  Number currentIdNum = realm.where(Note.class).max("id");
+                                  int nextId;
                                   if (currentIdNum == null) {
                                       nextId = 1;
                                   } else {
                                       nextId = currentIdNum.intValue() + 1;
                                   }
-                                  Tag tag = realm.createObject(Tag.class, nextId);
-                                  //tag.setId(nextId);
-                                  tag.setTagName(tagNew.getTagName());
-                                  tag.setColorValue(tagNew.getColorValue());//TODO save bg tag color
-                                 // realm.insertOrUpdate(tag);
-                                  note.setTag(tag);
-                              }
 
-                              note.setTextColor(textColor);
-                              note.setFontSize(fontSize);
+                                  Note note = realm.createObject(Note.class, nextId);
+                                  // note.setId(nextId);
+                                  note.setText(textOfNote.getText().toString());
+                                  if (TextUtils.isEmpty(titleOfNote.getText().toString().trim())) {
+                                      note.setTitle(textOfNote.getText().toString().substring(0, 19));
+                                  } else {
+                                      note.setTitle(titleOfNote.getText().toString());
+                                  }
 
-                              note.setPicture(thisNote.isPicture());
+                                  note.setTimeStamp(thisNote.getTimeStamp());
 
-                              //add media
-                              // increment index
-                              if(mediaNew.size()!=0)
-                                  for(int i = 0; i < mediaNew.size(); ++i){
-                                      currentIdNum = realm.where(Media.class).max("id");
+                                  if (tagNew != null) {
+                                      currentIdNum = realm.where(Tag.class).max("id");
+
                                       if (currentIdNum == null) {
                                           nextId = 1;
                                       } else {
                                           nextId = currentIdNum.intValue() + 1;
                                       }
-
-                                      Media media = realm.createObject(Media.class, nextId);
-                                      media.setFileType(mediaNew.get(i).getFileType());
-                                      media.setFilePath(mediaNew.get(i).getFilePath());
-                                      note.getMedia().add(media);
+                                      Tag tag = realm.createObject(Tag.class, nextId);
+                                      //tag.setId(nextId);
+                                      tag.setTagName(tagNew.getTagName());
+                                      tag.setColorValue(tagNew.getColorValue());//TODO save bg tag color
+                                      // realm.insertOrUpdate(tag);
+                                      note.setTag(tag);
                                   }
+
+                                  note.setTextColor(textColor);
+                                  note.setFontSize(fontSize);
+
+                                  note.setPicture(thisNote.isPicture());
+
+                                  //add media
+                                  // increment index
+                                  if (mediaNew.size() != 0)
+                                      for (int i = 0; i < mediaNew.size(); ++i) {
+                                          currentIdNum = realm.where(Media.class).max("id");
+                                          if (currentIdNum == null) {
+                                              nextId = 1;
+                                          } else {
+                                              nextId = currentIdNum.intValue() + 1;
+                                          }
+
+                                          Media media = realm.createObject(Media.class, nextId);
+                                          media.setFileType(mediaNew.get(i).getFileType());
+                                          media.setFilePath(mediaNew.get(i).getFilePath());
+                                          note.getMedia().add(media);
+                                      }
+                              } else {
+                                  thisNote.setText(textOfNote.getText().toString());
+                                  if (TextUtils.isEmpty(titleOfNote.getText().toString().trim())) {
+                                      thisNote.setTitle(textOfNote.getText().toString().substring(0, 19));
+                                  } else {
+                                      thisNote.setTitle(titleOfNote.getText().toString());
+                                  }
+
+
+                                  if (tagNew != null) {
+                                      if (tagNew.getId() == -1) {
+                                          Number currentIdNum = realm.where(Tag.class).max("id");
+                                          Integer nextId;
+                                          if (currentIdNum == null) {
+                                              nextId = 1;
+                                          } else {
+                                              nextId = currentIdNum.intValue() + 1;
+                                          }
+                                          Tag tag = realm.createObject(Tag.class, nextId);
+                                          tag.setTagName(tagNew.getTagName());
+                                          tag.setColorValue(tagNew.getColorValue());
+                                          // realm.insertOrUpdate(tag);
+                                          thisNote.setTag(tag);
+                                      } else {
+                                          thisNote.setTag(tagNew);
+                                          //tag.setId(nextId);
+                                      }
+                                  }
+
+
+                                  thisNote.setTextColor(textColor);
+                                  thisNote.setFontSize(fontSize);
+
+                                  thisNote.setPicture(thisNote.isPicture());
+
+                                  //add media
+                                  // increment index
+
+                                  thisNote.setMedia();
+                                  if (mediaNew.size() != 0)
+                                      for (int i = 0; i < mediaNew.size(); ++i) {
+                                          Number currentIdNum;
+                                          Integer nextId;
+                                          currentIdNum = realm.where(Media.class).max("id");
+                                          if (currentIdNum == null) {
+                                              nextId = 1;
+                                          } else {
+                                              nextId = currentIdNum.intValue() + 1;
+                                          }
+
+                                          Media media = realm.createObject(Media.class, nextId);
+                                          media.setFileType(mediaNew.get(i).getFileType());
+                                          media.setFilePath(mediaNew.get(i).getFilePath());
+                                          thisNote.getMedia().add(media);
+                                      }
+                              }
+
+
                           }
+
                       },
                     new Realm.Transaction.OnSuccess() {
                         @Override
@@ -931,8 +989,7 @@ public class SingleNoteActivity extends AppCompatActivity {
                            // Toast.makeText(getParent(), "fauil", Toast.LENGTH_LONG).show();
                         }
 
-                    }
-            );
+                    });
         }
     }
 
@@ -1015,5 +1072,11 @@ public class SingleNoteActivity extends AppCompatActivity {
 
     private void choosenTagColor(String tagColor) {
         tagCreated.setColorValue(tagColor);
+    }
+
+    public void tagDeletion(View view) {
+        TextView tw = (TextView) view;
+        tw.setVisibility(View.INVISIBLE);
+        tagNew = null;
     }
 }

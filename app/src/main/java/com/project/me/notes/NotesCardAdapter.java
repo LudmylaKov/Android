@@ -37,7 +37,7 @@ public class NotesCardAdapter extends RealmRecyclerViewAdapter<Note, NotesCardAd
     public class MyViewHolder extends RecyclerView.ViewHolder{
         public VerticalTextView tag;
         public TextView title, text, date;
-        public ImageView video, audio, notification;
+        public ImageView video, picture;
         public Note data;
 
         //public LinearLayout taglLayout;
@@ -49,8 +49,7 @@ public class NotesCardAdapter extends RealmRecyclerViewAdapter<Note, NotesCardAd
             date = (TextView) view.findViewById(R.id.date);
             tag = (VerticalTextView) view.findViewById(R.id.tag);
             video = (ImageView) view.findViewById(R.id.video);
-            audio = (ImageView) view.findViewById(R.id.audio);
-            notification = (ImageView) view.findViewById(R.id.notification);
+            picture = (ImageView) view.findViewById(R.id.picture);
 
             //taglLayout = (LinearLayout)view.findViewById(R.id.taglLayout);
         }
@@ -105,22 +104,19 @@ public class NotesCardAdapter extends RealmRecyclerViewAdapter<Note, NotesCardAd
         Log.i("tags",dateString);
 
 
-        if(note.getNotification()!=null && note.getNotification().isNotification()){
-            holder.notification.setVisibility(View.VISIBLE);
-        }
         if(note.isVideo()){
             holder.video.setVisibility(View.VISIBLE);
         }
 
-        if(note.isAudio()){
-            holder.audio.setVisibility(View.VISIBLE);
+        if(note.isPicture()){
+            holder.picture.setVisibility(View.VISIBLE);
         }
 
-        if(note.isAudio()&&!note.isVideo()){
+        if(note.isPicture()&&!note.isVideo()){
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
                     RelativeLayout.LayoutParams.WRAP_CONTENT);
             params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
-            holder.audio.setLayoutParams(params);
+            holder.picture.setLayoutParams(params);
         }
 
 

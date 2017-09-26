@@ -43,7 +43,7 @@
                         android:paddingRight="15dp"
                         android:paddingTop="3dp"
                         android:background="@android:color/transparent"
-                        android:text="Tags...I need more tags..."
+                        android:text="Tags"
                         android:textAlignment="textEnd"
                         android:textColor="@android:color/white"
                         android:textSize="20sp" />
@@ -71,15 +71,14 @@
                     android:src="@drawable/ic_movie_black_24dp" />
 
                 <ImageView
-                    android:id="@+id/audio"
+                    android:id="@+id/picture"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@id/video"
-                    android:layout_marginTop="7dp"
+                    android:layout_marginTop="10dp"
                     android:visibility="invisible"
-                    android:background="@drawable/ic_lens_black_24dp"
-                    android:padding="7dp"
-                    android:src="@drawable/ic_audiotrack_black_24dp" />
+                    android:background="@drawable/ic_image_blue_24dp"
+                    android:padding="7dp" />
 
                 <!--<View
                 style="@style/Divider"

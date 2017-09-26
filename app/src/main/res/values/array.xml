@@ -3,6 +3,6 @@
     <string-array name="choose_file">
         <item>@string/picture</item>
         <item>@string/video</item>
-        <item>@string/audio</item>
+
     </string-array>
 </resources>
